@@ -1,0 +1,10 @@
+Python data structures and operation running times
+    List
+    Set
+    Dictionary
+
+    Insertion
+    Deletion
+    Lookup
+    
+    

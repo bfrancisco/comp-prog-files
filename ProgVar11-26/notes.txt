@@ -1,0 +1,12 @@
+A. combi problem
+B. radix tree maybe
+C. math / number base shit
+D. count all possible divisions of graph where the total weights of two divisions are equal
+E. implementation with tricky maths?
+F. <30 submissions gg
+G. 
+H. basic sorting, check "groups". sort every color group and check if its the same with the big sorted List
+I. 
+J.
+K. Greedy
+ 

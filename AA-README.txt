@@ -5,4 +5,4 @@ Push to github repo:
 
 Fetch from github repo to local repo
     git fetch origin
-    git resett --hard origin/main
+    git reset --hard origin/main

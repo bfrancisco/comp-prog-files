@@ -26,12 +26,12 @@ int main(){
         }
     }
     // print dp[][]
-    // for (int i = 1; i <= n; i++){
-    //     for (int w = 1; w <= W; w++){
-    //         cout << dp[i][w] << " ";
-    //     }
-    //     cout << endl;
-    // }
+    for (int i = 0; i <= n; i++){
+        for (int w = 0; w <= W; w++){
+            cout << dp[i][w] << " ";
+        }
+        cout << endl;
+    }
     cout << dp[n][W];
     return 0;
 }

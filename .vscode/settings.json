@@ -33,7 +33,9 @@
     "deque": "cpp",
     "string": "cpp",
     "vector": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "tuple": "cpp",
+    "cmath": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

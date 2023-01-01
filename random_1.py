@@ -1,5 +1,2 @@
-a = [int(i) for i in input().split()]
-
-for x in a[1:]:
-    a[0] ^= x
-print(a[0])
+for _ in range(int(input())): 
+    s = input() ; print(int(s[0]) + int(s[-1]))

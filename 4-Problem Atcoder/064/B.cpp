@@ -2,19 +2,16 @@
 using namespace std;
 typedef long long int ll;
 
-void solve(){
-    char a,b,c;
-    cin >> a >> b >> c;
-    cout << int(int(a) + int(c)) << endl;
-}
-
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-    int t;
-    cin >> t;
-    while (t--){
-        solve();
+    int n; cin >> n;
+    int a[101];
+    for (int i = 0; i < n; i++){
+        cin >> a[i];
     }
+    sort(a, a+n);
+    cout << a[n-1] - a[0];
+    
     return 0;
-}
+}   

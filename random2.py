@@ -1,8 +1,2 @@
-import math
-
-def isperf(x):
-    if int(math.sqrt(x) + 0.5) ** 2 == x:
-        return True
-    return False
-
-print(isperf(1))
+from math import ceil
+print(ceil((0.1 + 0.1 + 0.1) / 3 * 10))

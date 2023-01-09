@@ -35,7 +35,9 @@
     "vector": "cpp",
     "ostream": "cpp",
     "tuple": "cpp",
-    "cmath": "cpp"
+    "cmath": "cpp",
+    "complex": "cpp",
+    "cstdlib": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

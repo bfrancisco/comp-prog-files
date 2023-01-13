@@ -10,9 +10,10 @@ int main(){
     ll num = -1;
     for (ll div = 1; div*div <= n; div++){
         if (n % div == 0){
-            num = 
+            num = n/div;
         }
     }
 
+    cout << (to_string(num)).size() << endl;
     return 0;
 }

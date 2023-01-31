@@ -1,81 +1,66 @@
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
+typedef vector<int> vi;
 
-int getMid(int s, int e) {return s + (e-s) / 2;}
-
-void updateUtil(int *st, int ss, int se, int i , int diff, int si){
-    if (i < ss || i > se) return;
-
-    st[si] = st[si] ^ diff;
-    if (se != ss){
-        int mid = getMid(ss, se);
-        updateUtil(st, ss, mid, i, diff, 2*si+1);
-        updateUtil(st, mid+1, se, i, diff, 2*si+2);
-    }
-}
-
-void update(int arr[], int * st, int n, int i, int new_val){
-    int diff = new_val - arr[i];
-    arr[i] = new_val;
-    updateUtil(st, 0, n-1, i, diff, 0);
-}
-
-int getSum(int *st, int ss, int se, int qs, int qe, int si){
-    if (qs <= ss && qe >= se)
-        return st[si];
-    
-    if (se < qs || ss > qe)
-        return 0;
-
-    int mid = getMid(ss, se);
-    return getSum(st, ss, mid, qs, qe, 2*si+1) ^
-        getSum(st, mid+1, se, qs, qe, 2*si+2);
-}
-
-int constructSTUtil(int arr[], int ss, int se, int *st, int si){
-    if (ss == se){
-        st[si] = arr[ss];
-        return arr[ss];
+struct segtree{
+    int n; 
+    int *vals;
+    segtree(vi &ar, int n){
+        this->n = n;
+        vals = new int[2*n];
+        for (int i = 0; i < n; ++i){
+            vals[i+n] = ar[i];
+        }
+        for (int i = n-1; i > 0; --i){
+            vals[i] = vals[i<<1] ^ vals[i<<1|1];
+        }
     }
 
-    int mid = getMid(ss, se);
-    st[si] = constructSTUtil(arr, ss, mid, st, si*2+1) ^
-            constructSTUtil(arr, mid+1, se, st, si*2+2);
-    return st[si];
-}
+    void update(int i, int v){
+        for (vals[i+=n] ^= v; i > 1; i >>= 1){
+            vals[i>>1] = vals[i] ^ vals[i^1];
+        }
+    }
 
-int *constructST(int arr[], int n){
-    // needs arr
-    int x = (int)(ceil(log2(n)));
-
-    int max_size = 2*(int)pow(2, x) - 1;
-
-    int *st = new int[max_size];
-
-    constructSTUtil(arr, 0, n-1, st, 0);
-
-    return st;
-}
+    // inclusive exlusive [l, r)
+    int query(int l, int r){
+        int res = 0;
+        for (l += n, r += n; l < r; l >>= 1, r >>= 1){
+            if (l&1) res ^= vals[l++];
+            if (r&1) res ^= vals[--r];
+        }
+        return res;
+    }
+};
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
     
-    int n, q; cin >> n >> q;
-    int arr[300010];
-    for (int i = 0; i < n; i++){
-        cin >> arr[i];
-    }
+    int n, q;
+    cin >> n >> q;
 
-    int st = constructST(arr, n);
+    vi ar(n);
+    for (int i = 0; i < n; i++)
+        cin >> ar[i];
+
+    segtree seg(ar, n);
+
+    // for (int i = 1; i < 2*n; i++){
+    //     cout << seg.vals[i] << " ";
+    // }
+    // cout << endl;
 
     while(q--){
-        int t, x, y;
-        cin >> t >> x >> y;
-
+        int t, x, y; cin >> t >> x >> y;
+        if (t == 1){
+            seg.update(x-1, y);
+        }
+        else if (t==2){
+            cout << seg.query(x-1, y) << endl;
+        }
     }
-    
 
     return 0;
 }   

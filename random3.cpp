@@ -2,12 +2,17 @@
 using namespace std;
 typedef long long int ll;
 
+ll T;
+vector<ll> sa, sb;
+
+ll void
+
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
     
     int n; cin >> n;
-    ll T; cin >> T;
+    cin >> T;
     vector<ll> A;
 
     for (int i = 0; i < n; i++){
@@ -24,7 +29,6 @@ int main(){
         else vb.push_back(A[i]);
     }
 
-    set<ll> sa, sb;
     int na = va.size(), nb = vb.size();
 
     // first set
@@ -34,7 +38,7 @@ int main(){
             if (mask & (1<<i)) total += va[i];
         }
         if (total <= T)
-            sa.insert(total);
+            sa.push_back(total);
     }
 
     // second set
@@ -44,27 +48,24 @@ int main(){
             if (mask & (1<<i)) total += vb[i];
         }
         if (total <= T)
-            sb.insert(total);
+            sb.push_back(total);
     }
 
+    sort(sa.begin(), sa.end());
+    sort(sb.begin(), sb.end());
+
     // print
-    // for (auto x : sa) cout << x << " ";
-    // cout << endl;
-    // for (auto x : sb) cout << x << " ";
-    // cout << endl;
+    for (auto x : sa) cout << x << " ";
+    cout << endl;
+    for (auto x : sb) cout << x << " ";
+    cout << endl;
 
     ll mx = -1;
 
     for (auto si : sa){
-        ll sj;
-        if (sb.find(T - si) != sb.end()){
-            sj = T - si;
-        }
-        else{
-            sj = *(--sb.lower_bound(T - si));
-        }
+        ll sj = bsearch(si);
         
-        // cout << si << " " << sj << endl;
+        cout << si << " " << sj << endl;
         if (si + sj <= T){
             mx = max(mx, si + sj);
             // cout << si << " " << sj << endl;

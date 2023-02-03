@@ -14,4 +14,5 @@ for n in range(L, R+1, 10):
         else:
             break
     
+    # print(n, f(n))
     print(n, c)

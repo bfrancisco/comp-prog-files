@@ -29,4 +29,4 @@ struct segtree{
             if (r&1) res += vals[--r];
         }
     }
-}
+};

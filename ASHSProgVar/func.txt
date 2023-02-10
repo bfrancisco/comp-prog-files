@@ -1,0 +1,17 @@
+FUNCTIONS - Feb 10, 2023
+
+1. Use
+2. Syntax
+3. Examples
+
+solve by using functions
+https://codeforces.com/group/ACMfAuIotp/contest/351711/problem/C (Not a Weeb)
+        make a function that:
+           - takes the first name, last name, and honorific
+           - prints the two name formats indicated in the problem
+
+https://codeforces.com/problemset/problem/1676/A 
+        make a function that takes a 3-character string integer, and output its corresponding sum
+
+https://codeforces.com/problemset/problem/888/A 
+        make a function for the local maximum/minimum

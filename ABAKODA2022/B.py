@@ -10,7 +10,7 @@ n = int(input())
 secondi = input()
 letters = list(input())
 
-# 1 - right over m. 0 - left over m
+# 1 - right over m. 0 - left over m.
 move = 1 if secondi[0] == 'r' else 0
 moveset = [
     [[0, 4, 8], [1, 3, 8], [2, 2, 8], [3, 1, 8]],

@@ -1,18 +1,35 @@
-a = [1, 23, 54, 23, 123, 543, 76, 897, 123, 2131]
+def print10times(word):
+    # it will take a string input,
+    # then print it 10 times
+    print(word)
+    print(word)
+    print(word)
+    print(word)
+    print(word)
+    print(word)
+    print(word)
+    print(word)
+    print(word)
+    print(word)
+
+def print_nth_lowest(a, n):
+    a.sort()
+    return a[n-1]
+
+
+a = [6, 1, 2, 3, 5, 4]
 
 # get minimum and maximum value
-max_value = max(a)
-min_value = min(a)
+# min_value = min(a)
+# max_value = max(a)
 
 # print the last number
-print(a[-1])
-
-# get the 3rd lowest number
-a.sort()
-print(a[2])
+# print(a[-1])
 
 # take a string input and print it 10 times
-s = input()
-    
+# word = input()
+# print10times(word)
 
-# take a list, return the k-th lowest number
+# print the n-th lowest number
+nlowest = print_nth_lowest(a, 5)
+print(nlowest)

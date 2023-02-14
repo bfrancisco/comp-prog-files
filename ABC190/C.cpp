@@ -8,37 +8,54 @@ int main(){
     
     int n, m;
     cin >> n >> m;
-    int freq[101];
-    int ball[101];
-    pair<int, int> cons[101];
-    for (int i = 0; i < m; i++){
-        int a, b; cin >> a >> b;
-        freq[a]++; freq[b]++;
-        cons[i] = {a, b};
-    }
 
+    vector<vector<int>> graph(n+1);
+    unordered_set<int> nodes;
+    for (int i = 0; i < m; i++){
+        int u, v; 
+        cin >> u >> v;
+        nodes.insert(u);
+        nodes.insert(v);
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+    
     int k; cin >> k;
+
+    vector<pair<int, int>> bin;
+
     for (int i = 0; i < k; i++){
-        int c, d; cin >> c >> d;
-        if (ball[c] == 0 && ball[d] == 0){
-            if (freq[c] >= freq[d]){
-                ball[c]++;
-            }
-            else
-                ball[d]++;
-        }
-        else if (ball[c] > 0)
-            ball[d] = 1;
-        else
-            ball[c] = 1;
+        int a, b;
+        cin >> a >> b;
+        bin.push_back({a, b});
     }
 
     int ans = 0;
-    for (auto p : cons){
-        if (ball[p.first] >= 1 && ball[p.second] >= 1)
-            ans++;
+    for (int bit = 0; bit < pow(2, k); bit++){
+        unordered_set<int> choice;
+        for (int i = 0; i < k; i++){
+            if (bit & (1 << i)){
+                choice.insert(bin[i].first);
+            }
+            else{
+                choice.insert(bin[i].second);
+            }
+        }
+
+        //check
+        int cnt = 0;
+        for (auto u : nodes){
+            for (auto v : graph[u]){
+                if (choice.find(u) != choice.end() && choice.find(v) != choice.end()){
+                    cnt++;
+                }
+            }
+        }
+        
+        ans = max(ans, cnt);
     }
 
+    ans /= 2;
     cout << ans;
     return 0;
     

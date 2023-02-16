@@ -2,16 +2,23 @@
 using namespace std;
 typedef long long int ll;
 
+void solve(){
+    int a, b; cin >> a >> b;
+    int n, m; cin >> n >> m;
+
+    
+}
+
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
     
-    int a, b, c; cin >> a >> b >> c;
+    int t; cin >> t;
+    while(t--){
+        solve();
+    }
 
-    if (a > b) cout << "Takahashi";
-    else if (a < b) cout << "Aoki";
-    else if (c == 0) cout << "Aoki";
-    else cout << "Takahashi";
+
     
     return 0;
 }

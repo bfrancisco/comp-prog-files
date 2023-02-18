@@ -2,17 +2,23 @@
 using namespace std;
 typedef long long int ll;
 
-int main ()
-{
-    std::set<int> myset = {3, 5, 8, 10, 13, 15, 18, 23};
-    std::set<int>::iterator itlow,itup;
+using namespace std;
 
-    itlow=myset.lower_bound(4);
 
-    // itup=myset.upper_bound (90);
+int main() {
+    // set of elements to permute
+    std::vector<int> elements = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     
-    cout << *(--itlow) << endl;
-    // cout << *itup << endl;
-
+    // size of one permutation
+    int k = 3;
+    
+    // generate all permutations in lexicographic order
+    do {
+        for (int i = 0; i < k; i++) {
+            std::cout << elements[i] << " ";
+        }
+        std::cout << std::endl;
+    } while (std::next_permutation(elements.begin(), elements.end()) && k--);
+    
     return 0;
 }

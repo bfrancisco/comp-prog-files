@@ -6,9 +6,8 @@ int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
 
-    ll a;
-    a = 10000000000000000;
-    a *= 2;
-    cout << a;
+    ll n, a; cin >> n >> a;
+
+    
     return 0;
 }

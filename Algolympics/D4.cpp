@@ -1,0 +1,99 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+
+unordered_set<char> ops = {'-', '+', '*', '/', '='};
+string s;
+
+bool operate(int a, char op, int b, int c){
+    if (a == 0 || b == 0 || c == 0) return false;
+    else if (op == '+') return a + b == c;
+    else if (op == '-' && a > b) return a - b == c;
+    else if (op == '/') return a / b == c;
+    else if (op == '*') return a * b == c;
+    else return false;
+}
+
+void rb(int& c, bitset<10>& used, vector<char>& letters, map<char, int>& li_val, int sz, vector<vector<char>>& operands, char& operation, bool& ex){
+    if (sz == c){
+        
+        vector<int> vals(3, 0);
+        for (int i = 0; i < 3; i++){
+            int pv = 1;
+            for (int j = operands[i].size() - 1; j >= 0; j--){
+                if (li_val[operands[i][j]] > 0)
+                    vals[i] += (li_val[operands[i][j]] * pv);
+                pv *= 10;
+            }
+        }
+
+        if (operate(vals[0], operation, vals[1], vals[2])){
+            for (auto& let : letters){
+                cout << let << " " << li_val[let] << endl;
+            }
+            ex = true;
+        }
+
+        return;
+    }
+
+    for (int i = 0; i < 10; i++){
+        if (used[i]) continue;
+        used[i] = true;
+        li_val[letters[sz]] = i;
+        rb(c, used, letters, li_val, sz+1, operands, operation, ex);
+        
+        if (ex) return;
+
+        li_val[letters[sz]] = 0;
+        used[i] = false;
+    }
+}
+
+void solve(){
+    int c;
+    cin >> c;
+    cin >> s;
+
+    set<char> lexi;
+    vector<vector<char>> operands(3);
+    int si = 0;
+    char operation;
+    for (auto &ch : s){
+        if (ops.find(ch) == ops.end()){
+            lexi.insert(ch);
+            operands[si].push_back(ch);
+        }
+        else{
+            if (si == 0) operation = ch;
+            si++;
+        }
+    }
+
+    bitset<10> tempb{0b0000000000};
+    vector<int> tempv;
+    vector<char> letters; // lexicographic ordering
+    map<char, int> li_val; //letter : value in perm
+
+    for (auto &ch : lexi) {
+        letters.push_back(ch);
+        li_val[ch] = 0;
+    }
+
+    bool ex = false;
+    rb(c, tempb, letters, li_val, 0, operands, operation, ex);
+
+    // cout << "condition : " << con << endl;
+    // cout << "k : " << lessc << endl;
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
+    int t; cin >> t;
+    while(t--) solve();
+
+
+    return 0;
+}

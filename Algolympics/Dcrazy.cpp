@@ -2,21 +2,8 @@
 using namespace std;
 typedef long long int ll;
 
-void rb(int c, bitset<10> used, vector<int>& curr, int sz, vector<vector<int>>& perms){
-    if (sz == c){
-        perms.push_back(curr);
-        return;
-    }
-
-    for (int i = 0; i < 10; i++){
-        if (used[i]) continue;
-        used[i] = true;
-        curr.push_back(i);
-        rb(c, used, curr, sz+1, perms);
-        curr.pop_back();
-        used[i] = false;
-    }
-}
+unordered_set<char> ops = {'-', '+', '*', '/', '='};
+string s;
 
 bool operate(int a, char op, int b, int c){
     if (a == 0 || b == 0 || c == 0) return false;
@@ -27,37 +14,18 @@ bool operate(int a, char op, int b, int c){
     else return false;
 }
 
-void solve(){
-    int c;
-    cin >> c;
-    string s; cin >> s;
-    vector<vector<int>> perms;
-    // build all permutations. 10P9
-    bitset<10> tempb{0b0000000000};
-    vector<int> tempv;
-    rb(c, tempb, tempv, 0, perms);
+void rb(int c, bitset<10> used, vector<int>& curr, int sz, bool& ex){
+    if (sz == c){
+        
+        map<char, int> letters; 
 
-    // for (auto p : perms){
-    //     for (auto e : p) cout << e << " ";
-    //     cout << endl;
-    // }
+        for (auto e : s){
+            if (ops.find(e) == ops.end()) letters[e] = 0;
+        }
 
-    unordered_set<char> ops = {'-', '+', '*', '/', '='};
-    map<char, int> letters; 
-
-    for (auto e : s){
-        if (ops.find(e) == ops.end()) letters[e] = 0;
-    }
-
-    for (auto &p : perms){
-        // for (auto e : p) cout << e << " ";
-        // cout << endl;
-        // for (auto let : letters) cout << let.first << " ";
-        // cout << endl;
         int i = 0;
         for (auto let : letters){
-            letters[let.first] = p[i];
-            // cout << let.first << " : " << p[i] << "   ";
+            letters[let.first] = curr[i];
             i++;
         }
         // cout << endl;
@@ -95,9 +63,33 @@ void solve(){
             for (auto &let : letters){
                 cout << let.first << " " << let.second << endl;
             }
-            return;
+            ex = true;
         }
+        return;
     }
+
+    for (int i = 0; i < 10; i++){
+        if (used[i]) continue;
+        used[i] = true;
+        curr.push_back(i);
+        rb(c, used, curr, sz+1, ex);
+
+        if (ex) return;
+
+        curr.pop_back();
+        used[i] = false;
+    }
+}
+
+void solve(){
+    int c;
+    cin >> c;
+    cin >> s;
+    // build all permutations. 10P9
+    bitset<10> tempb{0b0000000000};
+    vector<int> tempv;
+    bool ex = false;
+    rb(c, tempb, tempv, 0, ex);
 }
 
 int main(){

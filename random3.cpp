@@ -2,78 +2,55 @@
 using namespace std;
 typedef long long int ll;
 
-ll T;
-vector<ll> sa, sb;
-
-ll void
-
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
     
-    int n; cin >> n;
-    cin >> T;
-    vector<ll> A;
+    vector<int> vals(3, 0);
+    vector<unordered_map<char, int>> a(3);
 
-    for (int i = 0; i < n; i++){
-        ll x; cin >> x;
-        if (x <= T) A.push_back(x);
+    a[0]['A'] = 1;
+    a[0]['D'] = 4;
+    a[1]['B'] = 2;
+    a[1]['E'] = 5;
+    a[2]['C'] = 3;
+    a[2]['F'] = 6;
+
+    vals[0] += 5;
+    vals[1] += 7;
+    vals[2] += 9;
+
+    for (int i = 0; i < 3; i++){
+        for (auto& mp : a[i])
+            cout << mp.first << " : " << mp.second << "   ";
+        cout << endl;
     }
-    n = A.size();
+    cout << endl << endl;
 
-    vector<int> va, vb;
+    swap(a[0], a[1]);
 
-    int m = n/2;
-    for (int i = 0; i < n; i++){
-        if (i < m) va.push_back(A[i]);
-        else vb.push_back(A[i]);
+    for (int i = 0; i < 3; i++){
+        for (auto& mp : a[i])
+            cout << mp.first << " : " << mp.second << "   ";
+        cout << endl;
     }
+    cout << endl << endl;
 
-    int na = va.size(), nb = vb.size();
+    swap(a[1], a[2]);
 
-    // first set
-    for (int mask = 0; mask < (1<<na); mask++){
-        ll total = 0;
-        for (int i = 0; i < na; i++){
-            if (mask & (1<<i)) total += va[i];
-        }
-        if (total <= T)
-            sa.push_back(total);
+    for (int i = 0; i < 3; i++){
+        for (auto& mp : a[i])
+            cout << mp.first << " : " << mp.second << "   ";
+        cout << endl;
     }
+    cout << endl << endl;
 
-    // second set
-    for (int mask = 0; mask < (1<<nb); mask++){
-        ll total = 0;
-        for (int i = 0; i < nb; i++){
-            if (mask & (1<<i)) total += vb[i];
-        }
-        if (total <= T)
-            sb.push_back(total);
-    }
+    int b = 5 / 7;
 
-    sort(sa.begin(), sa.end());
-    sort(sb.begin(), sb.end());
+    cout << b << endl;
+    cout << (1-2)%10 << endl;
 
-    // print
-    for (auto x : sa) cout << x << " ";
-    cout << endl;
-    for (auto x : sb) cout << x << " ";
-    cout << endl;
-
-    ll mx = -1;
-
-    for (auto si : sa){
-        ll sj = bsearch(si);
-        
-        cout << si << " " << sj << endl;
-        if (si + sj <= T){
-            mx = max(mx, si + sj);
-            // cout << si << " " << sj << endl;
-        }
-    }
-
-    cout << mx << endl;
-
-
+    cout << 0 % 10 << endl;
+    cout << 0 / 10 << endl;
     return 0;
 }

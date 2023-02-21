@@ -24,7 +24,7 @@ bool astar(int ux, int uy, int vx, int vy, char goal, stack<char>& out, vector<s
     set<tuple<int, pair<int, int>, char>> open;
     
     // closed = {{x, y} : }
-    unordered_set<pair<int, int>> closed;
+    set<pair<int, int>> closed;
 
     open.insert({0, {ux, uy}, 'X'});
 

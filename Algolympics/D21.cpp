@@ -4,7 +4,8 @@ typedef long long int ll;
  
 unordered_set<char> ops = {'-', '+', '*', '/', '='};
 string s;
- 
+// int pw[8] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000};
+
 bool operate(int a, char op, int b, int c){
     if (a == 0 || b == 0 || c == 0) return false;
     else if (op == '+') return a + b == c;
@@ -14,7 +15,7 @@ bool operate(int a, char op, int b, int c){
     else return false;
 }
  
-void rb(int c, bitset<9>& used, vector<char>& letters, unordered_map<char, int>& li_val, int sz, vector<vector<char>>& operands, char operation, bool& ex, vector<int>& opsz){
+void rb(int c, bitset<10>& used, vector<char>& letters, unordered_map<char, int>& li_val, int sz, vector<vector<char>>& operands, char operation, bool& ex, vector<int>& opsz){
     if (sz == c){
         
         vector<int> vals(3, 0);
@@ -28,7 +29,7 @@ void rb(int c, bitset<9>& used, vector<char>& letters, unordered_map<char, int>&
  
         if (operate(vals[0], operation, vals[1], vals[2])){
             for (auto& let : letters){
-                cout << let << " " << li_val[let] << endl;
+                cout << let << " " << li_val[let] << "\n";
             }
             ex = true;
         }
@@ -71,7 +72,7 @@ void solve(){
         }
     }
  
-    bitset<9> tempb{0b000000000};
+    bitset<10> tempb{0b0000000000};
     vector<char> letters; // lexicographic ordering
     unordered_map<char, int> li_val; //letter : value in perm
  

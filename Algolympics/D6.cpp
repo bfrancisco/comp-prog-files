@@ -7,7 +7,10 @@ string s;
 bool ex;
 int c;
 char operation;
- 
+bool changedtodiv;
+bool remaindiv;
+bool changedtomul;
+
 int powt(int x){
     int val = 1;
     while(x--){
@@ -16,34 +19,46 @@ int powt(int x){
     return val;
 }
  
-// bool operate(int a, char op, int b, int r){
-//     if (a == 0 || b == 0 || r == 0) return false;
-//     else if (op == '+') return a + b == r;
-//     else if (op == '-' && a > b) return a - b == r;
-//     else if (op == '/') return a / b == r;
-//     else if (op == '*') return a * b == r;
-//     else return false;
-// }
- 
 int computeR(int a, char op, int b){
     if (a == 0 || b == 0) return -1;
     else if (op == '+') return a + b;
-    else if (op == '-') return a - b;    // if WA, this is the case
-    else if (op == '/') return a / b;
-    else if (op == '*') return a * b;
+    else if (op == '-') return a - b;
+    else if (op == '/') {
+        if (changedtodiv){
+            int val = a/b;
+            // cout << "div : " << val << endl;
+            if (fabs(((float)a / (float)val) - (float)b) < FLT_EPSILON && b*val == a) return val;
+            else return -1;
+        }
+        else if (remaindiv){
+            // division can be incorrect, but still be valid
+            // 3/1 == 1 might be correct (derived from 3/2 = 1)
+            int val = a/b;
+            if (b==1) return val-1;
+        }
+        return a / b;
+
+    }
+    else if (op == '*') {
+        if (changedtomul){
+            int val = a*b;
+            if (a==1) return val+1;
+        }
+        return a * b;
+    }
     else return -1;
 }
  
-void rb(int lc, bitset<9>& used, vector<char>& letters, unordered_map<char, int>& li_val, int sz, vector<unordered_map<char, int>>& operandset, vector<vector<char>>& operands, vector<int>& opsz, vector<int>& vals, unordered_set<char>& allocated_lets, bool& ex){
+void rb(int lc, bitset<10>& used, vector<char>& letters, unordered_map<char, int>& li_val, int sz, vector<unordered_map<char, int>>& operandset, vector<vector<char>>& operands, vector<int>& opsz, vector<int>& vals, unordered_set<char>& allocated_lets, bool& ex){
     if (sz == lc){
         int result = computeR(vals[0], operation, vals[1]);
         
  
         // cout << used << endl;
-        // if (li_val['A'] == 0 && li_val['B'] == 1 && li_val['C'] == 2){
-        //     for (int i = 0; i < 3; i++) cout << vals[i] << endl;
-        //     cout << used << endl;
-        //     cout << result << endl;
+        // if (li_val['A'] == 3 && li_val['B'] == 1){
+        //     for (int i = 0; i < 3; i++) cout << "vals : "<< vals[i] << endl;
+        //     cout << "used : " << used << endl;
+        //     cout << "result : " << result << endl;
  
         //     for (auto& let : letters)
         //         cout << let << " : " << li_val[let] << endl;
@@ -124,7 +139,9 @@ void solve(){
     cin >> s;
     ex = false;
     operation = 'x'; // placeholder
- 
+    changedtodiv = false;
+    remaindiv = false;
+    changedtomul = false;
     // iterating lexi is lexicograpic
     // build set of letters for each operand
     set<char> lexi;
@@ -201,7 +218,7 @@ void solve(){
     }
     // cout << "CON : " << con << endl;
  
-    bitset<9> tempb{0b000000000};
+    bitset<10> tempb{0b0000000000};
     vector<char> letters; // lexicographic ordering
     
     unordered_map<char, int> li_val; //letter : value in perm
@@ -238,11 +255,13 @@ void solve(){
             swap(opsz[0], opsz[2]);
             swap(opsz[1], opsz[2]);
             operation = '/';
+            changedtodiv = true;
         }
         else if (operation == '/'){
             swap(operandset[1], operandset[2]);
             swap(operands[1], operands[2]);
             swap(opsz[1], opsz[2]);
+            remaindiv = true;
         }
     }
     else if (con == 2){
@@ -251,8 +270,8 @@ void solve(){
         swap(opsz[0], opsz[2]);
         if (operation == '+')       operation = '-';
         else if (operation == '-')  operation = '+';
-        else if (operation == '*')  operation = '/';
-        else if (operation == '/')  operation = '*';
+        else if (operation == '*')  {operation = '/'; changedtodiv = true;}
+        else if (operation == '/')  {operation = '*'; changedtomul = true;}
     }
  
     // for (int i = 0; i < 3; i++){
@@ -274,7 +293,10 @@ void solve(){
  
     // for (auto& ch : allocated_lets) cout << ch << " ";
     // cout << endl; 
- 
+    
+    // cout << con << endl;
+    // cout << changedtodiv << endl;
+
     rb(lessc, tempb, letters, li_val, 0, operandset, operands, opsz, vals, allocated_lets, ex);
 }
  

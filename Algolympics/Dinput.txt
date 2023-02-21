@@ -1,25 +1,47 @@
 12
-3
-A*B=C
-3
-A*C=B
-3
-B*A=C
-3
-B*C=A
-3
-C*A=B
-3
-C*B=A
-3
-A/B=C
-3
-A/C=B
-3
-B/A=C
-3
-B/C=A
-3
-C/A=B
-3
+
+A*B=C pass
+
+A*C=B pas
+
+B*A=C pass
+
+B*C=A pas
+
+C*A=B pas
+
+C*B=A pas
+
+A/B=C pass
+
+A/C=B pass 
+
+B/A=C pass 
+
+B/C=A pas 
+
+C/A=B 
+
 C/B=A
+
+10
+9
+JIHG/FEDE=BA
+9
+JIHG/FEDE=BA
+9
+JIHG/FEDE=BA
+9
+JIHG/FEDE=BA
+9
+JIHG/FEDE=BA
+9
+JIHG/FEDE=BA
+9
+JIHG/FEDE=BA
+9
+JIHG/FEDE=BA
+9
+JIHG/FEDE=BA
+9
+JIHG/FEDE=BA

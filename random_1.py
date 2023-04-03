@@ -1,1 +1,1 @@
-print(bin(120))
+print(bin(5 >> 2 & 1)[2:])

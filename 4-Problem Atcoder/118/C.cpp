@@ -12,9 +12,12 @@ int main(){
     for (int i = 0; i < n; i++)
         cin >> a[i];
 
-    sort(a, a+n);
-        
-
+    int g = a[0];
+    for (int i = 1; i < n; i++)
+        g = gcd(g, a[i]);
+    
+    cout << g << endl;
+    
 
     return 0;
 }

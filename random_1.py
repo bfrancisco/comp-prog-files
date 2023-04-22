@@ -1,4 +1,4 @@
-# Finished 'verify_fb_token' in 0.0000 secs
+# Format: Finished 'verify_fb_token' in 0.0000 secs
 
 db = {}
 inp = input().split()

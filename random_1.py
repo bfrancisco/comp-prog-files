@@ -1,20 +1,37 @@
-# Format: Finished 'verify_fb_token' in 0.0000 secs
-
-db = {}
-inp = input().split()
-while inp[0] != 'e':
-    func_name = inp[1][1:-1]
-    time = float(inp[3])
-
-    if func_name not in db:
-        db[func_name] = [1, time]
-    else:
-        db[func_name][0] += 1
-        db[func_name][1] += time
+def MaxDist(A, N):
+ 
+    # List to store maximum and
+    # minimum of all the four forms
+    V = [0 for i in range(N)]
+    V1 = [0 for i in range(N)]
+ 
+    for i in range(N):
+        V[i] = A[i][0] + A[i][1]
+        V1[i] = A[i][0] - A[i][1]
     
-    inp = input().split()
-
-print()
-
-for k, v in db.items():
-    print(k, " : ", db[k][1] / db[k][0], "seconds in", db[k][0], "runs")
+    
+    # Sorting both the vectors
+    V.sort()
+    V1.sort()
+ 
+    maximum = max(V[-1] - V[0],
+                  V1[-1] - V1[0])
+    print(*V)
+    print(*V1)
+    
+    print(maximum)
+ 
+ 
+# Driver code
+if __name__ == "__main__":
+ 
+    N = int(input())
+ 
+    # Given Co-ordinates
+    A = []
+    for i in range(N):
+        a,b = map(int, input().split())
+        A.append([a,b])
+ 
+    # Function call
+    MaxDist(A, N)

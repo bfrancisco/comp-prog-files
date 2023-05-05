@@ -10,7 +10,7 @@ ll r(ll y){
     if (y == X) return 0;
     if (dp.find(y) != dp.end()) return dp[y];
     if (y%2==0) {
-        dp[y] = min(1 + r(y/2), abs(X-y)); 
+        dp[y] = min(1 + r(y/2), abs(X-y));
         return dp[y];
     }
     else if (y%2) {

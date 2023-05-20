@@ -1,11 +1,9 @@
-from collections import deque
-
-n = int(input())
-a = [int(i) for i in input().split()]
-b = [int(i) for i in input().split()]
-d = deque(b)
-
-print(d)
-print(d[0])
-d.rotate()
-print(d[0])
+d = 0
+c = 0
+for i in range(1, 7):
+    for j in range(1, 7):
+        for k in range(1, 7):
+            if (i == 1 or j == 1 or k == 1):
+                c += 1
+            d += 1
+print(c, d)

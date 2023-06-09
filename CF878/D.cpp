@@ -15,16 +15,8 @@ void solve(){
     for (int i = 1; i < n; i++){
         difs.push_back(a[i] - a[i-1]);
     }
-    // sort(difs.begin(), difs.end());
     for (auto e : difs) cout << e << " "; cout << endl;
 
-
-    // 8 14 20
-    // a[0] + 8
-    // [    '      '      '     ]
-    // 1 25 49 73 98
-    // 1 3 10 11 15 17
-    // 
 }
 
 int main(){

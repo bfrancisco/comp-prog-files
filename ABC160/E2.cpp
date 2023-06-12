@@ -22,7 +22,7 @@ public:
         }
         // if no color, highest prio
         if (ap.second == 3){
-            return true; 
+            return true;
         } 
         else if (bp.second == 3){
             return false;

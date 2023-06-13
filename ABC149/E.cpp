@@ -14,5 +14,11 @@ int main(){
     for (int i = 0; i < n; i++) cout << a[i] << " ";
     cout << endl;
     
+    vector<ll> x(n-1);
+    for (int i = 0; i < n-1; i++){
+        x[i] = a[i] + a[i+1];
+    }
+    for (auto v : x) cout << v << " ";
+    cout << endl;
     return 0;
 }

@@ -22,3 +22,6 @@ int main(){
     cout << endl;
     return 0;
 }
+
+// 4 16
+// 4 3 2 1

@@ -4,26 +4,28 @@ typedef long long int ll;
 
 ll n, m;
 vector<ll> a, p;
-
+// 10 14 19 34 33
+// 34 33 19 14 10
 pair<ll, ll> f(ll pv){
     ll shakes = 0, happy = 0;
     for (int i = 0; i < n; i++){
         if (a[i]+a[i] < pv) break;
-        int l = i, r = n-1, gud;
+        int l = i, r = n-1, gud = -1e9;
         while (l <= r){
             // cout << "in: " << l << " " << r << endl;
-
             int mid = (l+r) / 2;
             if (a[i] + a[mid] >= pv) {l = mid+1; gud = mid;}
             else r = mid-1;
         }
 
         ll rights = gud-i;
+        // cout << "right: " << rights << "      ";
         shakes += 1 + rights*2;
-        happy += a[i]*2 + a[i]*rights + (p[gud] - p[i])*2;
-
-        return {shakes,happy};
+        happy += a[i]*2 + a[i]*rights*2 + (p[gud] - p[i])*2;
+        // cout << shakes << " " << happy << endl;
     }
+
+    return {shakes,happy};
 }
 
 int main(){
@@ -40,31 +42,29 @@ int main(){
     
     
     ll l = 0, r = 2*a[0] + 10; 
-    ll gud;
+    ll pv = -1e9;
     while (l <= r){
-        cout << "out: " << l << " " << r << endl;
         ll mid = (l+r)/2;
+        // cout << "out: " << l << " " << r << " " << mid << endl;
         pair<ll, ll> shakeshappy = f(mid);
         ll shakes = shakeshappy.first;
-        ll happy = shakeshappy.second;
-        cout << shakes << " " << happy << endl;
+        // ll happy = shakeshappy.second;
+        // cout << shakes << " " << happy << endl;
         if (shakes >= m){
             l = mid+1;
-            gud = mid;
+            pv = mid;
         }
         else{
             r = mid-1;
         }
     }
 
-    pair<ll, ll> shakeshappy = f(gud);
+    pair<ll, ll> shakeshappy = f(pv);
     ll shakes = shakeshappy.first;
     ll happy = shakeshappy.second;
-
-    cout << shakes << " " << happy << endl;
-    if (shakes == m) cout << happy << endl;
-    // else cout << happy - l << endl;
-
+    ll dif = (shakes-m);
+    // cout << shakes << " " << happy << " " << pv << endl;
+    cout << happy - dif*pv << endl;
 
     return 0;
 }

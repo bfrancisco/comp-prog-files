@@ -20,6 +20,6 @@ for i in range(m):
     db[a[pairs[i][1]-1]] += 1
     db[a[pairs[i][2]-1]] += 1
 
-# for x in a:
-#     print(x, ":", db[x])
+for x in a:
+    print(x, ":", db[x])
 print(ans)

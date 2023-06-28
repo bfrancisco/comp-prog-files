@@ -31,7 +31,7 @@ void SieveOfEratosthenes(int n)
 // Driver Code
 int main()
 {
-    int n = 30;
+    int n = 10;
     cout << "Following are the prime numbers smaller "
          << " than or equal to " << n << endl;
     SieveOfEratosthenes(n);

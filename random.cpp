@@ -11,11 +11,8 @@ int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
     
-    int n; cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-
-    sort(a.begin(), a.end(), abscomp);
-    for (int i = 0; i < n; i++) cout << a[i] << endl;
+    int a = 3;
+    a *= 5 + 1;
+    cout << a << endl;
     return 0;
 }

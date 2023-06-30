@@ -1,4 +1,4 @@
-N = 20
+N = 100
 vals = [0 for i in range(N+1)]
 cumu = [0 for i in range(N+1)]
 for n in range(1, N+1):

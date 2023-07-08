@@ -65,7 +65,6 @@ int main(){
                 ans++;
         }
     }
-            
 
     cout << ans << endl;
 

@@ -26,7 +26,7 @@ ll modinv(ll a, ll m){
 }
 
 ll C(ll n, ll r){
-    return ((((fact[n] * invf[n-r]) % mod) * invf[r]) % mod);
+    return modd((modd((fact[n] * invf[n-r]), mod) * invf[r]), mod);
 }
 
 int main(){
@@ -55,7 +55,7 @@ int main(){
         invf[i] = (invf[i+1] * (i+1)) % mod;
     }
 
-    ll full = C(W+B, B) - C(W+B, B+K+1);
+    ll full = modd(C(W+B, B) - C(W+B, B+K+1), mod);
     cout << full << endl;
 
     return 0;

@@ -4,6 +4,8 @@ typedef long long int ll;
 
 vector<vector<pair<int, pair<ll, ll>>>> adj;
 
+
+
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
@@ -19,7 +21,7 @@ int main(){
         mxD = max(mxD, d);
     }
 
-    
+    cout << dijkstra(1) << endl;
 
     return 0;
 }

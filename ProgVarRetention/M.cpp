@@ -10,7 +10,10 @@ int dy[4] = {1, -1, 0, 0};
 
 void pr(){
     for (int i = 0; i < n; i++){
-        cout << grid[i] << endl;
+        for (int j = 0 ; j < m; j++){
+            cout << grid[i][j];
+        }
+        cout << endl;
     }
     cout << endl;
 }
@@ -29,32 +32,29 @@ void BFS(int si, int sj, set<pair<int,int>> &salvations){
         pair<int, int> p = q.front();
         q.pop();
         int i = p.first, j = p.second;
-        cout << "in: " << i << " " << j << endl;
+        // cout << "in: " << i << " " << j << endl;
         int hasSalvation = 0;
-        int s = 0;
+
+        vector<pair<int,int>> topush;
         for (int k = 0; k < 4; k++){
             int ni = i + dx[k];
             int nj = j + dy[k];
-
-            if (!valid(ni, nj) || grid[ni][nj] == 'V' || salvations.find({ni, nj}) != salvations.end()){
-                s++;
-                continue;
-
-            }
-            if (grid[ni][nj] == '-'){
-                hasSalvation = 1;
-                continue;
-            }
-            if (!hasSalvation && k == 3){
-                salvations.insert({ni, nj});
-                continue;
-            }
-            
-            grid[ni][nj] = 'V';
-            q.push({ni, nj});
+            // cout << ni << " " << nj << endl;
+            if (valid(ni, nj) && grid[ni][nj] == 'X' && salvations.find({ni, nj}) == salvations.end()) topush.push_back({ni, nj});
+            if (valid(ni, nj) && grid[ni][nj] == '-') hasSalvation = 1;
         }
 
-        // pr();
+        // for (auto &[f, s] : topush) cout << f << " " << s << endl;
+        if (!hasSalvation && !topush.empty()){
+            salvations.insert(topush[topush.size()-1]);
+            topush.pop_back();
+        }
+        while (!topush.empty()){
+            grid[topush[topush.size()-1].first][topush[topush.size()-1].second] = 'V';
+            q.push(topush[topush.size()-1]);
+            topush.pop_back();
+        }
+
     }
 
     for (int i = 0; i < n; i++){
@@ -79,12 +79,6 @@ int main(){
         for (int j = 0; j < m; j++) grid[i][j] = s[j];
     }
 
-    // for (int i = 0; i < n; i++){
-    //     for (int j = 0; j < m; j++){
-    //         cout << grid[i][j] << " ";
-    //     }cout << endl;
-    // }
-    // cout <<"end" << endl;
     // BFS to get regions. # of regions is ans
     int ans = 0;
     for (int i = 0; i < n; i++){
@@ -94,6 +88,7 @@ int main(){
                 set<pair<int,int>> salvations;
                 BFS(i, j, salvations);
                 ans++;
+                pr();
             }
         }
     }

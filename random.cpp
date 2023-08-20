@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-typedef long long int ll;
+using ll = long long;
 
 int main(){
     ios_base::sync_with_stdio(false);

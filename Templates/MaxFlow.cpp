@@ -2,22 +2,22 @@
 using namespace std;
 typedef long long int ll;
 
-int max_flow(vector<vector<int>>& c, int s, int t, int n) {
-    vector<vector<int>> f(n, vector<int>(n));
-    vector<int> p(n); // parent pointers
+ll max_flow(vector<vector<ll>>& c, ll s, ll t) {
+    vector<vector<ll>> f(c.size(), vector<ll>(c.size()));
+    vector<ll> p(c.size()); // parent pollers
 
-    auto resid = [&](int u, int v) {
+    auto resid = [&](ll u, ll v) {
         return c[u][v] - f[u][v];
     };
 
     auto find_aug_path = [&]() {
         fill(p.begin(), p.end(), -1);
-        queue<int> q;
+        queue<ll> q;
         p[s] = s;
         q.push(s);
         while(not q.empty()) {
-            int u = q.front(); q.pop();
-            for(int v = 0; v < n; v++) {
+            ll u = q.front(); q.pop();
+            for(ll v = 0; v < c.size(); v++) {
                 if(resid(u, v) > 0 and p[v] == -1) {
                     p[v] = u;
                     q.push(v);
@@ -28,36 +28,37 @@ int max_flow(vector<vector<int>>& c, int s, int t, int n) {
     };
 
     auto augment = [&]() {
-        int bottleneck = numeric_limits<int>::max();
-        for(int v = t; v != s; v = p[v]) {
+        ll bottleneck = numeric_limits<ll>::max();
+        for(ll v = t; v != s; v = p[v]) {
             bottleneck = min(bottleneck, resid(p[v], v));
         }
-        for(int v = t; v != s; v = p[v]) {
+        for(ll v = t; v != s; v = p[v]) {
             f[p[v]][v] += bottleneck;
             f[v][p[v]] -= bottleneck;
         }
         return bottleneck;
     };
 
-    int flow = 0;
+    ll flow = 0;
     while(find_aug_path()) {
         flow += augment();
     }
-
     return flow;
 }
 
 int main() {
-    int n, m;
+    ll n, m;
     cin >> n >> m;
-    vector<vector<int>> c(n, vector<int>(n));
-    for(int i = 0; i < m; i++) {
-        int u, v, cap;
+    vector<vector<ll>> c(n, vector<ll>(n));
+    for(ll i = 0; i < m; i++) {
+        ll u, v, cap;
         cin >> u >> v >> cap;
+        u--; v--;
+
         c[u][v] += cap;
     }
-    int s, t;
-    cin >> s >> t;
-    cout << max_flow(c, s, t, n) << endl;
+    int s = 0, t = n-1;
+    cout << max_flow(c, s, t) << endl;
+
     return 0;
 }

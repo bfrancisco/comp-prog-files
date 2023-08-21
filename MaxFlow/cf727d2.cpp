@@ -44,12 +44,6 @@ struct flow_network {
                 }
             }
         }
-
-        // cout << "\nPath: " << endl;
-        // for (int v = t; v != s; v = edges[parent[v] ^ 1].v){
-        //     cout << v+1 << " ";
-        // } cout << s+1 << endl;
-
         return parent[t] != -1;
     };
 
@@ -82,71 +76,74 @@ int main(){
     int shirt_cap[6];
     for (int i = 0; i < 6; i++) cin >> shirt_cap[i];
     
-
-    int m; cin >> m;
-    int n = 1 + 21 + 6 + 1; // source + people + shirts + sink
-
-    flow_network fn(n, 0, n-1);
-
-    for (int i = 22; i <= 26; i++){
-        if (shirt_cap[i-22] > 0){
-            fn.add_edge(i, n-1, shirt_cap[i-22]);
-            // cout << "Added " << i << " to " << n-1 << endl;
-        }
-    }
-
-    map<string, int> sztoi;
-    map<int, string> itosz;
     vector<string> szes = {"S", "M", "L", "XL", "XXL", "XXXL"};
-    
     for (int i = 0; i < 6; i++){
         for (int j = i+1; j < 6; j++){
             szes.push_back(szes[i] + "," + szes[j]);
         }
     }
-    for (int i = 0; i < 21; i++) { sztoi[szes[i]] = i+21+1; itosz[i+21+1] = szes[i]; }
 
-    vector<string> inps(m);
-    for (int i = 1; i <= m; i++){
-        fn.add_edge(0, i, 1);
-        string inp; cin >> inp;
-        inps[i] = inp;
-        inp += ',';
+    int m; cin >> m;
+    int p = szes.size(); // 21
+    int n = 1 + p + 6 + 1; // source + people + shirts + sink
+
+    flow_network fn(n, 0, n-1);
+
+    // -> sink
+    for (int i = p+1; i <= p+6; i++){
+        if (shirt_cap[i-p-1] > 0){
+            fn.add_edge(i, n-1, shirt_cap[i-p-1]);
+        }
+    }
+
+    map<string, int> sztoi, sztou;
+    map<int, string> itosz, utosz;
+    for (int i = 0; i < 6; i++) { sztoi[szes[i]] = i+p+1; itosz[i+p+1] = szes[i]; }
+    for (int u = 0; u < p; u++) { sztou[szes[u]] = u+1; utosz[u+1] = szes[u]; }
+    map<string, vector<string>> matches;
+    map<string, int> freq;
+    set<int> exists;
+    for (int i = 0; i < p; i++) { matches[szes[i]]; freq[szes[i]] = 0; }
+
+    vector<string> inputs(m);
+    for (int i = 0; i < m; i++){
+        cin >> inputs[i];
+        freq[inputs[i]]++;
+        exists.insert(sztou[inputs[i]]);
+    }
+
+    // people -> shirts
+    for (int u = 1; u <= p; u++){
+        string s = szes[u-1] + ',';
         string shirt = "";
-        for (auto c : inp){
-            if (c == ',') {
-                 fn.add_edge(i, sztoi[shirt], 1);
-                // cout << "Added " << i << " to " << sztoi[shirt] << endl;
+        for (auto c : s){
+            if (c == ','){
+                fn.add_edge(u, sztoi[shirt], freq[szes[u-1]]);
                 shirt.clear();
             }
             else shirt += c;
         }
     }
 
-    int x = fn.calc_max_flow();
-
-    // at least 1 forward edge with a flow == 1 should exist from each person to have perfect matching
-    vector<string> out(m+1);
-
-    for (int u = 1; u <= 21; u++){
-        int match = 0;
-        // cout << "Person: " << u << endl;
-        for (int ind : fn.adj[u]){
-            if (ind%2) continue;
-            edge& e = fn.edges[ind];
-            // cout << "  to: " << e.v << " | flow: " << e.f << "   ";
-            if (e.f >= 1) {
-                // cout << "Found!";
-                out[u] = itosz[e.v];
-                match = 1;
-                break;
-            }
-            // cout << endl;
-        }
-        if (!match) { cout << "NO" << endl; return 0; }
+    // source -> 
+    for (int i = 1; i <= p; i++){
+        fn.add_edge(0, i, freq[szes[i-1]]);
     }
 
-    cout << "YES" << endl;
-    for (int u = 1; u <= m; u++) cout << out[u] << endl;
+    int x = fn.calc_max_flow();
+    if (x < m) { cout << "NO" << endl; return 0; }
 
+    cout << "YES" << endl;
+
+    for (auto inp : inputs){
+        for (auto ind : fn.adj[sztou[inp]]){
+            if (ind%2) continue;
+            edge& e = fn.edges[ind];
+            if (e.f > 0){
+                cout << itosz[e.v] << endl;
+                e.f--;
+                break;
+            }
+        }
+    }
 }

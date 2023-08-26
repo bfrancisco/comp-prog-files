@@ -1,4 +1,4 @@
-// https://codeforces.com/problemset/problem/546/E
+// https://atcoder.jp/contests/abc205/tasks/abc205_f
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -72,48 +72,29 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    int n, m; cin >> n >> m;
-    vector<int> a(n+1), b(n+1);
-    int supply = 0, demand = 0;
-    for (int i = 1; i <= n; i++) {cin >> a[i]; supply += a[i];}
-    for (int i = 1; i <= n; i++) {cin >> b[i]; demand += b[i];}
+    int h,w,k; cin >> h >> w >> k;
 
-    if (supply != demand) { cout << "NO" << endl; return 0; }
+    int s = 0, t = w+h+2*k+1;
+    flow_network fn(1 + w + 2*k + h + 1, 0, t);
 
-    int s = 0, t = 1+2*n;
-    flow_network fn(1 + 2*n + 1, s, t);
-    
-    for (int u = 1; u <= n; u++){
-        fn.add_edge(s, u, a[u]);
-        fn.add_edge(u, u+n, 1e9);
-        fn.add_edge(u+n, t, b[u]);
+    for (int v = 1; v <= w; v++) {
+        fn.add_edge(s, v, 1);
     }
-
-    for (int i = 0; i < m; i++){
-        int u, v; cin >> u >> v;
-        fn.add_edge(u, v+n, 1e9);
-        fn.add_edge(v, u+n, 1e9);
+    for (int u = 1; u <= h; u++) {
+        fn.add_edge(u+w+k+k, t, 1);
     }
-
-    if (fn.calc_max_flow() != supply) { cout << "NO" << endl; return 0; }
-    
-    cout << "YES" << endl;
-    vector<vector<int>> out(n+1, vector<int>(n+1, 0));
-    for (int u = 1; u <= n; u++){
-        for (auto ind : fn.adj[u]){
-            if (ind%2) continue;
-            edge& e = fn.edges[ind];
-            out[u][e.v - n] = e.f;
+    for (int i = 1; i <= k; i++) {
+        int a, b, c, d; cin >> a >> b >> c >> d;
+        fn.add_edge(i+w, i+w+k, 1);
+        for (int u = b; u <= d; u++){
+            fn.add_edge(u, i+w, 1);
+        }
+        for (int u = a; u <= c; u++){
+            fn.add_edge(i+w+k, u+w+k+k, 1);
         }
     }
-    for (int i = 1; i <= n; i++){
-        for (int j = 1; j <= n; j++){
-            cout << out[i][j] << " ";
-        }
-        cout << endl;
-    }
 
-    
+    cout << fn.calc_max_flow() << endl;
 
     return 0;
 }

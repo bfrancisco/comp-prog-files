@@ -4,7 +4,6 @@
 using namespace std;
 typedef long long int ll;
 
-ll dp[20][10][2];
 ll MOD = 1e9 + 7;
 ll mod(ll x, ll m){
     if (m == 0) return 0;
@@ -12,34 +11,33 @@ ll mod(ll x, ll m){
     return (x%m + m) % m;
 }
 
-ll rec(auto& s, int n, int prev, int free){
-    if (n == 0){
-        return 0;
-    }
-    if (n == 1){
-        dp[n][prev][free] = (s[s.size() - 1] != prev);
-    }
+ll dp[20][11][2][2];
+ll rec(string& s, int n, int prev, int leadzeros, int bounded){
+    if (n==0) return 1;
+    if (dp[n][prev][leadzeros][bounded] != -1)
+        return dp[n][prev][leadzeros][bounded];
+    
+    dp[n][prev][leadzeros][bounded] = 0;
+    int bound = (bounded ? s[s.size() - n] - '0' : 9);
 
-    if (dp[n][prev][free] != -1) return dp[n][prev][free];
-
-    dp[n][prev][free] = 0;
-    int r = (free ? 9 : s[s.size() - n] - '0');
-    for (int i = 0; i <= r; i++){
-        dp[n][prev][free] += dp[n-1][s[s.size() - n] - '0'][(s[s.size() - n - '0' == i])];
-        dp[n][prev][free] = mod(dp[n][prev][free], MOD);
+    for (int i = 0; i <= bound; i++){
+        if (prev == i && !leadzeros) continue;
+        dp[n][prev][leadzeros][bounded] += rec(s, n-1, i, (leadzeros && i == 0), (bounded && i == bound));
     }
-
-    return mod(dp[n][prev][free], MOD);
+    return dp[n][prev][leadzeros][bounded];
 }
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
     
+    ll a, b; cin >> a >> b;
+    string l = to_string(a-1), r = to_string(b);
     memset(dp, -1, sizeof dp);
-    string n, m; cin >> n >> m;
-    ll R = rec(m, m.size(), -1, 0);
-    cout << R << endl;
+    ll R = rec(r, r.size(), 10, 1, 1); // 10 is placeholder
+    memset(dp, -1, sizeof dp);
+    ll L = rec(l, l.size(), 10, 1, 1);
+    cout << R - L << endl;
 
     return 0;
 }

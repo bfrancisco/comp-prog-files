@@ -8,6 +8,22 @@ vector<vector<int>> adj;
 vector<int> special;
 vector<unordered_map<int,int>> dst; // min from n to special[k]
 int dp[17][1<<17];
+int n, m, k; 
+
+int rec(int u, int done, int val){
+    if (dp[u][done] != 1e9){
+        return dp[u][done];
+    }
+
+    for (int i = 0; i < k; i++){
+        if (u == special[i] || (done & (1<<i))){
+            continue;
+        }
+        dp[u][done] = min(dp[u][done], val + rec(special[i], done | (1<<i), dst[u][special[i]]));
+    }
+
+    return dp[u][done];
+}
 
 void bfs(int s){
     queue<pair<int,int>> q;
@@ -28,7 +44,7 @@ void bfs(int s){
 }
 
 void solve(){
-    int n, m; cin >> n >> m;
+    cin >> n >> m;
     adj.resize(n);
     for (int i = 0; i < m; i++){
         int u, v; cin >> u >> v;
@@ -36,32 +52,50 @@ void solve(){
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
-    int k; cin >> k;
+    cout << "done uv" << endl;
+    cin >> k;
     special.resize(k);
-    for (int i = 0; i < k; k++)
-        cin >> special[k];
+    for (int i = 0; i < k; i++){
+        cin >> special[i];
+        special[i]--;
+    }
+        
+
+    cout << "done iunput" << endl;
+    dst.resize(n);
 
     for (int i = 0; i < n; i++){
         for (int j = 0; j < k; j++){
             dst[i][special[j]] = -1;
         }
     }
+    cout << "done dst" << endl;
     for (int i = 0; i < k; i++){
-        bfs(k);
+        bfs(special[i]);
     }
-    
+    cout << "done bfs" << endl;
+
     // check if connected
     for (int i = 0; i < n; i++){
+        cout << i << endl;
         for (int j = 0; j < k; j++){
+            cout << "  " << j << endl;
             if (dst[i][special[j]] == -1){
                 cout << -1 << endl;
                 return;
             }
         }
     }
+    cout << "conek" << endl;
 
-    
+    int ans = 1e9;
+    memset(dp, 1e9, sizeof dp);
+    for (int i = 0; i < k; i++){
+        ans = min(ans, rec(special[i], 0, 0));
+        cout << i << " " <<  ans << endl;
+    }
 
+    cout << ans << endl;
 }
 
 int main(){

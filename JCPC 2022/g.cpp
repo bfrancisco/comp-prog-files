@@ -80,7 +80,9 @@ void solve(){
         else if (l > r){
             // binary search r. if r < first of firsts, then impossible
             if (r < firsts[0]) { cout << "No" << endl; continue; }
+            cout << l << " " << r << endl;
             int ind = bisearch(r, firsts);
+            cout << ind << endl;
             cout << (first_to_second[firsts[ind]] >= l ? "Yes" : "No") << endl;
         }
     }

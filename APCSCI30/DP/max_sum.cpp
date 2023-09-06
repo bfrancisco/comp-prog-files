@@ -1,64 +1,81 @@
 // https://codeforces.com/gym/101853/problem/E
-// no dp yet
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
  
-ll MOD = 1e9 + 7;
-ll mod(ll x, ll m){
-    if (m == 0) return 0;
-    if (m < 0) m *= -1;
-    return (x%m + m) % m;
-}
- 
-int n;
-int dp[17][1 << 17];
-int rec(int i, int last_picks, int val, vector<vector<int>>& mat){
-    // cout << i << " " << val << endl;
-    if (i == n) return val;
-    if (dp[i][last_picks] > 0) return dp[i][last_picks];
+int mat[16][16];
+int dp[16][1<<16];
 
-    // int mx = 0;
-    for (int bit = 0; bit < (1 << n); bit++){
-        bool good = 1;
-        int toadd = 0;
-        for (int j = 0; j < n; j++){
-            if ( (((bit & (1 << j)) && (bit & (1 << (j+1)))) ) || 
-                (bit & (1 << j) && last_picks & (1 << j)) ||
-                (bit & (1 << j) && last_picks & (1 << (j+1))) ||
-                (bit & (1 << j) && j != 0 && last_picks & (1 << (j-1)))){
-                    good = 0;
-                    break;
-                }
-            if (bit & (1 << j))
-                toadd += mat[i][n-j-1];
-        }
- 
-        if (good){
-            dp[i][last_picks] = max(dp[i][last_picks], rec(i+1, bit, val + toadd, mat));
-        }
-    }
- 
-    return dp[i][last_picks];
-}
- 
 int solve(){
-    cin >> n;
-    vector<vector<int>> mat(n, vector<int>(n));
+    int n; cin >> n;
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             cin >> mat[i][j];
 
-    int ret = rec(0, 0, 0, mat);
-    for (int i = 0; i < n; i++){
-        for (int j = 0; j < 1<<n; j++){
-            cout << dp[i][j] << " ";
+    // O(n*2^n)
+    vector<int> goodbits;
+    for (int i = 0; i < 1<<n; i++){
+        int good = 1;
+        for (int j = 0; j < n; j++){
+            if (i&(1<<j) && i&(1<<(j+1))) {good = 0; break;}
         }
-        cout << endl;
+        if (good) goodbits.push_back(i);
     }
-    return ret;
+
+    // (a^2*n) where a = sizeof goodbits
+    vector<vector<int>> bestbits(goodbits.size());
+    for (int i = 0; i < goodbits.size(); i++){
+        for (auto prevbit : goodbits){
+            int good = 1;
+            for (int j = 0; j < n; j++){
+                if (goodbits[i] & (1 << j) &&
+                    (prevbit & (1 << j) || 
+                    prevbit & (1 << (j+1)) || 
+                    (j != 0 && prevbit & (1 << (j-1))))){
+                        good = 0;
+                        break;
+                }
+            }
+            if (good) bestbits[i].push_back(prevbit);
+        }
+    }
+
+    // O(n^2*a)
+    vector<unordered_map<int, int>> valmat(n);
+    for (int i = 0; i < n; i++){
+        for (int b = 0; b < goodbits.size(); b++){
+            int val = 0;
+            for (int j = 0; j < n; j++){
+                if (goodbits[b] & (1 << j))
+                    val += mat[i][n-j-1];
+            }
+            valmat[i][goodbits[b]] = val;
+        }
+    }
+    memset(dp, 0, sizeof dp);
+
+    for (int b = 0; b < goodbits.size(); b++){
+        dp[0][goodbits[b]] = valmat[0][goodbits[b]];
+    }
+
+    // O(n*a*b) where b is sizeof bestbits(a)
+    for (int i = 1; i < n; i++){
+        for (int b = 0; b < goodbits.size(); b++){
+            for (auto c : bestbits[b]){
+                dp[i][goodbits[b]] = max(dp[i][goodbits[b]], dp[i-1][c] + valmat[i][goodbits[b]]);
+            }
+        }
+    }
+
+    int ans = -1;
+    for (int bit : goodbits){
+        ans = max(ans, dp[n-1][bit]);
+    }
+    return ans;
 }
- 
+
+
+
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);

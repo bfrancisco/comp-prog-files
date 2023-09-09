@@ -1,9 +1,4 @@
-lst = ['a', 'b', 'c']
-print(lst)
-let = ""
-for letter in lst:
-    letter = 'd'
-    let = letter
-
-print(lst)
-print(let)
+for m in range(-1000, 1000):
+    for n in range(-1000, 1000):
+        if (39*m - 56*n == 11):
+            print(m, n)

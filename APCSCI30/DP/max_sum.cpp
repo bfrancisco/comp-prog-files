@@ -71,6 +71,8 @@ int solve(){
     for (int bit : goodbits){
         ans = max(ans, dp[n-1][bit]);
     }
+
+    cout << goodbits.size() << endl;
     return ans;
 }
 

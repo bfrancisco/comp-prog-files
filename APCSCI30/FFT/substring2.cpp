@@ -55,18 +55,8 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    string s; cin >> s;
-    int n = s.size();
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) {
-        a[i] = s[i] - '0';
-        b[i] = s[i] - '0';
-    }
-    reverse(b.begin(), b.end());
-    vector<int> f = multiply(a, b);
-    // for (auto e : f) cout << e << " "; cout << endl;
+    string s, t; cin >> s >> t;
     
-    for (int i = n; i < n+n-1; i++) cout << f[i] << " "; cout << endl;
     
     return 0;
 }

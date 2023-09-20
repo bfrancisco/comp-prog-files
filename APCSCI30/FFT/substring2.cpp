@@ -56,7 +56,24 @@ int main() {
     cin.tie(0); cout.tie(0);
 
     string s, t; cin >> s >> t;
-    
+    int n = s.size(), m = t.size();
+    vector<int> a(n), b(m);
+
+    for (int i = 0; i < n; i++){
+        if (s[i] == '0') a[i] = -1;
+        else a[i] = 1;
+    }
+    for (int i = 0; i < m; i++){
+        if (t[i] == '0') b[m-i-1] = -1;
+        else b[m-i-1] = 1;
+    }
+
+    vector<int> f = multiply(a, b);
+    int ans = 1e9;
+    for (int i = m-1; i < n; i++){
+        ans = min(ans, (m-f[i])/2);
+    }
+    cout << ans << endl;
     
     return 0;
 }

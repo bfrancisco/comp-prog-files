@@ -5,7 +5,11 @@ typedef long long int ll;
 void solve(int t){
     ll a, b, c;
     cin >> a >> b >> c;
-     if (2*a < b){
+    if (c < a && c < b){
+        cout << "Case #" << t << ": " << 0 << endl;
+        return;
+    }
+    if (2*a < b){
         // prio singles
         cout << "Case #" << t << ": " << c/a << endl;
     }
@@ -14,9 +18,9 @@ void solve(int t){
         ll pat = d*2;
         ll bun = d*2;
         c -= d*b;
-        pat += c/a;
-        pat += (c/a)*2;
-        cout << "Case #" << t << ": " << (bun <= pat ? pat-1 : pat) << endl;
+        pat += (c/a);
+        bun += (c/a)*2;
+        cout << "Case #" << t << ": " << (bun > pat ? pat : pat-1) << endl;
     }
     
 }

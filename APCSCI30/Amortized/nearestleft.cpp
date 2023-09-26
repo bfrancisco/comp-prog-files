@@ -7,27 +7,28 @@ int main(){
     cin.tie(NULL); cout.tie(NULL);
     
     int n; cin >> n;
-    vector<int> a(n+1);
-    vector<pair<int, int>> b(n+1);
-    a[0] = 0;
-    b[0] = {0, 0};
+    vector<pair<int,int>> a;
+    a.push_back({0, 0});
     for (int i = 1; i <= n; i++){
-        cin >> a[i];
-        b[i] = {a[i], i};
-    }
-
-    sort(b.begin(), b.end());
-    for (auto p : b) cout << p.first << " "; cout << endl;
-    for (int i = 1; i <= n; i++){
-        cout << a[i] << ": ";
-        pair<int, int> x = {a[i], 0};
-        auto it = lower_bound(b.begin(), b.end(), x);
+        int x; cin >> x;
+        while (a.back().first >= x){
+            a.pop_back();
+        }
+        auto it = lower_bound(a.begin(), a.end(), make_pair(x, 0));
         it--;
-        cout << (*it).first << " " << (*it).second << endl;
+        cout << (*it).second << " ";
+        a.push_back({x, i});
     }
     cout << endl;
-    
-    
+
 
     return 0;
 }
+
+// 0 2 5 1 4 8 3 2 5
+//   2 5 
+//       1 4 8
+//           1 3
+//             1 2 
+
+                

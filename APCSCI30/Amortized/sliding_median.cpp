@@ -34,7 +34,7 @@ int main(){
             itmed++;
         }
         if (lower_bound(s.begin(), s.end(), a[i]) == itmed){
-            itmed++;
+            itmed++; 
         }
         s.erase(lower_bound(s.begin(), s.end(), a[i]));
 

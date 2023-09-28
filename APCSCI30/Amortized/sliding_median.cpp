@@ -18,27 +18,31 @@ int main(){
     for (int i = 0; i < (k-1)/2; i++) itmed++;
 
     cout << *itmed << " ";
+    // for (auto e : s) cout << e << " "; cout << endl;
     for (int i = 0, j = k; j < n; i++, j++){
+        s.insert(a[j]);
         if (a[i] == *itmed){
-            if (a[j] >= *itmed){
-                
-            }
-            else{
-                
-            }
-            continue;
+            if (a[j] >= *itmed) itmed++;
+            else itmed--;
         }
-        
-        // add left rem right
-
+        // pop right push left
+        else if (a[i] >= *itmed && a[j] < *itmed){
+            itmed--;
+        }
+        // pop left push right
+        else if (a[i] < *itmed && a[j] >= *itmed){
+            itmed++;
+        }
+        if (lower_bound(s.begin(), s.end(), a[i]) == itmed){
+            itmed++;
+        }
+        s.erase(lower_bound(s.begin(), s.end(), a[i]));
 
         cout << *itmed << " ";
+        // for (auto e : s) cout << e << " "; cout << endl;
+
     }
     cout << endl;
     return 0;
 }
 
-// 8 3
-// 2 4 3 5 8 1 2 1
-
-// 1 3 3 3 9

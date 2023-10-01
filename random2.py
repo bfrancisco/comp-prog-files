@@ -1,32 +1,10 @@
-def predict(inp):
-    db = {
-        "2" : "abc",
-        "3" : "def",
-        "4" : "ghi",
-        "5" : "jkl",
-        "6" : "mno",
-        "7" : "pqrs",
-        "8" : "tuv",
-        "9" : "wxyz",
-    }
-    f = open("input.txt", 'r')
-    wordbank = set()
-    for x in f.readlines():
-        wordbank.add(x.strip())
-    f.close()
-    print(wordbank)
-    bank = set()
-    def rb(s, i, inp):
-        
-        if (len(s) == len(inp)):
-            print(s)
-            bank.add(s)
-            return
+a = []
 
-        for c in db[inp[i]]:
-            rb(s + c, i+1, inp)
+for x in range(1, 10000):
+    if (x%3 == 2 and x%5 == 3 and x%7 == 2):
+        a.append(x)
 
-    rb("", 0, inp)
-    return bank
+print(a)
 
-print(predict(input()))
+for i in range(0, len(a)-1, 2):
+    print(a[i+1] - a[i])

@@ -2,6 +2,8 @@
 using namespace std;
 typedef long long int ll;
 
+// for p == 1 only
+
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);

@@ -1,3 +1,5 @@
+import random
+
 def generate():
     "generate random test case here"
 

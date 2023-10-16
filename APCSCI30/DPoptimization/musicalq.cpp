@@ -3,21 +3,32 @@ using namespace std;
 typedef long long int ll;
 
 int c, n;
-int a = -1e8, b = -1e7;
-int arr[1000];
-void rec(int i, int c1, int c2){
-    if (i == n){
-        if (c1 + c2 > a + b || (c1+c2==a+b && abs(c1-c2) < abs(a-b))){
-            a = c1; b = c2;
-        }
-        return;
+int arr[1001];
+int good[1001][1001];
+
+int rec(int i, int c1, int c2){
+    if (good[c1][c2] != -1)
+        return good[c1][c2];
+
+    if (c1 == 0 && c2 == 0)
+        return 1;
+    if (i < 0)
+        return 0;
+
+    if (arr[i] > c1 && arr[i] > c2){
+        good[c1][c2] = rec(i-1, c1, c2);
+    }
+    else if (arr[i] <= c1 && arr[i] > c2){
+        good[c1][c2] = rec(i-1, c1, c2) |  rec(i-1, c1 - arr[i], c2);
+    }
+    else if (arr[i] > c1 && arr[i] <= c2){
+        good[c1][c2] = rec(i-1, c1, c2) | rec(i-1, c1, c2 - arr[i]);
+    }
+    else{
+        good[c1][c2] = rec(i-1, c1, c2) | rec(i-1, c1 - arr[i], c2) | rec(i-1, c1, c2 - arr[i]);
     }
 
-    if (c1 + arr[i] <= c)
-        rec(i+1, c1 + arr[i], c2);
-    if (c2 + arr[i] <= c)
-        rec(i+1, c1, c2 + arr[i]);
-    rec(i+1, c1, c2);
+    return good[c1][c2];
 }
 
 int main(){
@@ -25,9 +36,29 @@ int main(){
     cin.tie(NULL); cout.tie(NULL);
     
     cin >> c >> n;
-    for (int i = 0; i < n; i++) cin >> arr[i];
+    int mx = 0;
+    for (int i = 1; i <= n; i++) {cin >> arr[i]; mx += arr[i];}
 
-    rec(0, 0, 0);
+    memset(good, -1, sizeof(good));
+    for (int i = c; i >= 0; i--){
+        for (int j = c; j >= 0; j--){
+            rec(n, i, j);
+        }
+    }
+    // cout << rec(n, 100, 95) << endl;
+    // cout << good[100][95] << endl;
+    cout << mx << endl;
+    int a = 0, b = 0;
+    for (int i = 0; i <= c; i++){
+        for (int j = 0; j <= c; j++){
+            if (!good[i][j] || i+j > mx)
+                continue;
+            if (i + j > a + b || (i+j == a+b && abs(i-j) < abs(a-b))){
+                a = i; b = j;
+            }
+            // cout << a << " " << b << endl;
+        }
+    }
     cout << a << " " << b << endl;
 
     return 0;

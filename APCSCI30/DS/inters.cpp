@@ -1,6 +1,13 @@
 #include<bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
 using namespace std;
 typedef long long int ll;
+
+typedef tree<int, null_type, less<int>, rb_tree_tag,
+             tree_order_statistics_node_update>
+    ordered_set;
 
 int main(){
     ios_base::sync_with_stdio(false);
@@ -11,17 +18,17 @@ int main(){
     for (int i = 0; i < n; i++){
         int a, b, c, d;
         cin >> a >> b >> c >> d;
-        if (a == c) a.push_back({a, b, d, 'V'});
+        if (a == c) sweep.push_back({a, b, d, 'V'});
         else{
-            a.push_back({a, b, d, 'S'});
-            a.push_back({c, b, d, 'E'});
+            sweep.push_back({a, b, d, 'S'});
+            sweep.push_back({c, b, d, 'E'});
         }
     }
 
     sort(sweep.begin(), sweep.end());
 
-    set<int> curY;
-    int ans = 0;
+    ordered_set curY;
+    ll ans = 0;
     for (auto& t : sweep){
         int x = get<0>(t);
         int yone = get<1>(t);
@@ -36,10 +43,10 @@ int main(){
         }
         else if (con == 'V'){
             if (yone > ytwo) swap(yone, ytwo);
-
-            
+            ans += ll(curY.order_of_key(ytwo)) - ll(curY.order_of_key(yone));
         }
     }
+    cout << ans << endl;
 
 
     return 0;

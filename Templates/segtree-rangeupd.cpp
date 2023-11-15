@@ -65,4 +65,12 @@ struct segtree {
                     query(_i, _j, p<<1|1, k+1, j);
         }
     }
+
+    void update(int _i, int _j, int v) {
+        update(_i, _j, v, 1, 0, n-1);
+    }
+
+    int query(int _i, int _j) {
+        return query(_i, _j, 1, 0, n-1);
+    }
 };

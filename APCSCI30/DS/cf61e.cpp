@@ -2,24 +2,12 @@
 using namespace std;
 typedef long long int ll;
 
-ll ans = 0;
-
-ll f(ll depth){
-    if (depth < 3) return 0;
-    return depth*(depth-1)*(depth-2)/6;
-}
-
-void dfs(ll u, ll prev, ll depth, unordered_map<ll, vector<ll>>& adj){
-    // if leaf node
-    if (adj.find(u) == adj.end()){
-        ans += f(depth);
-    }
-
-    for (auto v : adj[u]){
-        if (v == prev) continue;
-        dfs(v, u, depth+1, adj);
-    }
-}
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+typedef tree<ll, null_type, less<ll>, rb_tree_tag,
+             tree_order_statistics_node_update>
+    ordered_set;
 
 int main(){
     ios_base::sync_with_stdio(false);
@@ -30,25 +18,24 @@ int main(){
     for (int i = 0; i < n; i++)
         cin >> a[i];
     
-    set<ll> bank;
-    bank.insert(0);
-    unordered_map<ll, vector<ll>> adj;
-    for (int i = n-1; i >= 0; i--) {
-        bank.insert(a[i]);
-        auto it = lower_bound(bank.begin(), bank.end(), a[i]);
-        it--;
-        // if (*it == 0) continue;
-        ll u = *it;
-        adj[u].push_back(a[i]);
+    ordered_set ls, gr;
+    vector<ll> less(n), great(n);
+    for (int i = n-1; i >= 0; i--){
+        ls.insert(a[i]);
+        less[i] = ls.order_of_key(a[i]);
     }
-
-    for (auto [k, v] : adj) {
-        cout << k << " : ";
-        for (auto x : v) cout << x << " ";
-        cout << endl;
+    for (int i = 0; i < n; i++){
+        gr.insert(a[i]);
+        great[i] = i-gr.order_of_key(a[i]);
     }
+    
+    // for (auto x : less) cout << x << " "; cout << endl;
+    // for (auto x : great) cout << x << " "; cout << endl;
 
-    dfs(0, -1, 0, adj);
-    cout << ans << endl;
+    ll ans = 0;
+    for (int i = 0; i < n; i++){
+        ans += less[i]*great[i];
+    }
+    cout << ans;
     return 0;
 }

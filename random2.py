@@ -1,3 +1,7 @@
-for i in range(1, 10000):
-    if ((2*i) % 6 == 5):
-        print(i)
+a = 0
+for i in range(4, 100):
+    for j in range(4, 100):
+        for k in range(4, 100):
+            if i + j + k == 40:
+                a += 1
+print(a)

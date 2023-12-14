@@ -59,16 +59,15 @@ void tarjan(){
     fixIndex();
 }
 
-void dfs2(int u, int prev, int grandpa, int reg, vector<vector<int>>& leaves, vector<vector<int>>& sccRevAdj, map<int, int>& sccRep){
-    if (sccRevAdj[u].size() == 0){
-        if (reg == 0)
-            ans.push_back({sccRep[grandpa], sccRep[u]});
-        leaves[reg].push_back({})
+void dfs2(int u, int prev, int region, vector<vector<int>>& tails, vector<vector<int>>& sccRevAdj){
+    if (sccRevAdj[u].empty()){
+        // if (region == 1){cout << "HELLO" << u << endl;}
+        tails[region].push_back(u);
         return;
     }
     for (auto v : sccRevAdj[u]){
         if (v == prev) continue;
-        dfs2(v, u, grandpa, sccRevAdj, sccRep);
+        dfs2(v, u, region, tails, sccRevAdj);
     }
 }
 
@@ -94,36 +93,47 @@ int main(){
         }
     }
 
-    vector<vector<int>> sccRevAdj(sccCount); // reverse adjlist, so we bfs
-    set<int> sccPathRep; // startingpoint of bfs
+    vector<vector<int>> sccRevAdj(sccCount); // reverse adjlist
+    set<int> headsset; // size is no. of regions
     for (int u = 0; u < n; u++){
         for (auto v : adj[u]){
             if (low[u] == low[v]){
-                sccPathRep.insert(low[u]);
+                headsset.insert(low[u]);
             }
             else{
                 sccRevAdj[low[v]].push_back(low[u]);
             }
         }
     }
+    vector<int> heads;
+    for (auto h : headsset) heads.push_back(h);
+    int r = heads.size();
+    vector<vector<int>> tails(r);
+    for (int i = 0; i < r; i++){
+        dfs2(heads[i], -1, i, tails, sccRevAdj);
+    }
 
-    vector<int> regions; // reg[i] is representative of region i
-    int r = sccPathRep.size(); // no. of reigons
-    for (auto x : sccPathRep) regions.push_back(x);
+    // for (int u = 0; u < sccCount; u++){
+    //     cout << u << "  :  ";  for (auto v : sccRevAdj[u]) cout << v << " "; cout << endl;
+    // }
 
-    vector<vector<int>> leaves(sccCount);
-    // complete first region (SCC)
-    dfs2(regions[0], -1, regions[0], 0, leaves, sccRevAdj, sccRep);
+    // for (auto h : heads) cout << h << " "; cout << endl;
+    // for (int i = 0; i < r; i++){
+    //     cout << i << " |  "; for (auto t : tails[i]) cout << t << " "; cout << endl;
+    // }
 
-    // precalculate leaves of all regions
-
-    // connect first region to leaves of 2nd region, 2nd->3rd, ...
-    // connect head of r-th region to head of r-1th region, ...
+    // 1st head - 2nd tail, 2nd head - 3rd tail, ... , last head - first tail
+    for (int i = 0; i < r-1; i++){
+        for (auto t : tails[i+1]){
+            ans.push_back({sccRep[heads[i]], sccRep[t]});
+        }
+    }
+    for (auto t : tails[0]){
+        ans.push_back({sccRep[heads[r-1]], sccRep[t]});
+    }
 
     cout << ans.size() << endl;
-    for (auto& [a, b] : ans){
-        cout << a+1 << " " << b+1 << endl;
-    }
+    for (auto &[a, b] : ans) cout << a+1 << " " << b+1 << endl;
 
     return 0;
 }

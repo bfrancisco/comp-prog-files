@@ -38,12 +38,26 @@ void dfs(int at){
     }
 }
 
+void fixIndex(){
+    map<int, int> old_new;
+    int newi = 0;
+    for (int i = 0; i < n; i++){
+        if (old_new.find(low[i]) == old_new.end()){
+            old_new[low[i]] = newi++;
+        }
+    }
+    for (int i = 0; i < n; i++){
+        low[i] = old_new[low[i]];
+    }
+}
+
 void tarjan(){
     memset(ids, -1, sizeof(ids));
     for (int i = 0; i < n; i++){
         if (ids[i] == -1)
             dfs(i);
     }
+    fixIndex();
 }
 
 ll dfs2(int u, int prev){
@@ -78,36 +92,27 @@ int main(){
     }
     tarjan();
 
-    // map<int, int> sccRep;
-    // for (int i = 0; i < n; i++){
-    //     if (sccRep.find(low[i]) == sccRep.end()){
-    //         sccRep[low[i]] = i;
-    //     }
-    // }
-
     sccadj.resize(sccCount);
     SCCcost.resize(sccCount);
-    vector<int> starting;
+    set<int> starting;
+    for (int scc = 0; scc < sccCount; scc++) starting.insert(scc);
 
     for (int u = 0; u < n; u++){
         SCCcost[low[u]] += cost[u];
-        cout << u << endl;
-        if (adj[u].empty())
-            starting.push_back(u);
         for (auto v : adj[u]){
             if (low[u] != low[v]){
-                cout << low[v] << endl;
                 sccadj[low[v]].push_back(low[u]);
                 // sccadj is reversed
+                starting.erase(low[u]);
             }
         }
     }
 
-
-    for (int i = 0; i < sccCount; i++){
-        cout << i << "  |  ";
-        for (auto v : sccadj[i]) cout << v << " "; cout << endl;
-    }
+    // for (int i = 0; i < sccCount; i++){
+    //     cout << i << "  |  ";
+    //     for (auto v : sccadj[i]) cout << v << " "; cout << endl;
+    // }
+    // for (auto s : starting) cout << s << " "; cout << endl;
 
     dp.assign(sccCount, -1);
     ll ans = 0;

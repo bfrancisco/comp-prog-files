@@ -35,12 +35,26 @@ void dfs(int at){
     }
 }
 
+void fixIndex(){
+    map<int, int> old_new;
+    int newi = 0;
+    for (int i = 0; i < n; i++){
+        if (old_new.find(low[i]) == old_new.end()){
+            old_new[low[i]] = newi++;
+        }
+    }
+    for (int i = 0; i < n; i++){
+        low[i] = old_new[low[i]];
+    }
+}
+
 void tarjan(){
     memset(ids, -1, sizeof(ids));
     for (int i = 0; i < n; i++){
         if (ids[i] == -1)
             dfs(i);
     }
+    fixIndex();
 }
 
 int main(){

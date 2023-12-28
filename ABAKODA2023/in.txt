@@ -1,0 +1,27 @@
+3
+6 6
+CompA CompB CompC CompD CompE CompF
+CompA CompB
+CompA CompC
+CompC CompD
+CompB CompD
+CompB CompE
+CompD CompF
+7 7
+CompA CompB CompC CompD CompE CompF CompG
+CompA CompB
+CompB CompC
+CompC CompD
+CompD CompE
+CompE CompA
+CompD CompF
+CompD CompG
+8 7
+CompA CompB CompC CompD CompE CompF CompG CompH
+CompA CompH
+CompB CompH
+CompB CompG
+CompC CompG
+CompC CompF
+CompD CompF
+CompD CompE

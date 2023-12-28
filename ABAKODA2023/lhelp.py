@@ -2,7 +2,7 @@ a = input()
 vowels = set(list("AEIOUaeiou"))
 cons = [c.upper() for c in a if c.isalpha() and c not in vowels]
 n = len(cons) - 1
-L = [" "]
+L = [' ']
 x = int(input())
 # 0 means adding space
 for bit in range(1 << n):
@@ -14,17 +14,6 @@ for bit in range(1 << n):
     L.append(new)
 
 L.sort()
-p2 = [1]
-
-while (p2[-1] < (1<<n)):
-    p2.append(p2[-1]*2)
-print(p2)
-for i in p2:
-    print(i, ":", L[i])
-print(L[8])
-print(L[9])
-print(L[10])
-print(L[11])
-print(L[12])
-
+for i in range(1, len(L)):
+    print(L[i], '\t', i-1, '\t', bin(i)[2:])
 # print(L[x-1] if x <= len(L) else "out of bounds")

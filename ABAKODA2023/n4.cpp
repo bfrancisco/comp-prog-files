@@ -43,15 +43,15 @@ void solve(){
             
     }
     
-    vector<int> edg(n, 0);
+    vector<int> edg(n+100, 0);
     for (int i = 0; i < n; i++){
         int sz = adj[i].size();
         edg[sz]++;
     }
 
-    // cout << cycles << endl;
+    cout << cycles << endl;
     // WA: code outputs Alice where it should be Pranked
-    if      (n >= 5 && edg[3] == 2 && edg[1] == 2 && edg[1]+edg[2]+edg[3] == n  && cycles == 1 && n == m    && regions==1){
+    if      (n >= 5 && edg[3] == 2 && edg[1] == 2 && (edg[1]+edg[2]+edg[3]) == n  && cycles == 1 && n == m    && regions==1){
         cout << "Alice";
     }
     else if (n >= 5 && edg[4] == 1                && edg[2]+edg[4] == n         && cycles == 2 && n == m-1  && regions==1){

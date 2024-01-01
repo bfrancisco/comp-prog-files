@@ -2,7 +2,7 @@
 using namespace std;
 typedef long long int ll;
 
-int dfs(int u, int p, vector<int>& visited, vector<vector<int>>& adj){
+int dfs(int u, int p, vector<int>& visited, vector<set<int>>& adj){
     visited[u] = 1;
     int cyc = 0;
     for (auto v : adj[u]){
@@ -16,10 +16,24 @@ int dfs(int u, int p, vector<int>& visited, vector<vector<int>>& adj){
     return cyc;
 }
 
+int dfs2(int u, int p, vector<set<int>>& adj){
+    // dfs from node having 1 neighbor, end at node with 3 neighbors
+    if ((int)adj[u].size() == 3){
+        return u;
+    }
+    for (auto v : adj[u]){
+        if (v != p){
+            return dfs2(v, u, adj);
+        }
+    }
+
+    return -1;
+}
+
 void solve(){
     int n, m; cin >> n >> m;
     map<string, int> mp;
-    vector<vector<int>> adj(n);
+    vector<set<int>> adj(n);
     for (int i = 0; i < n; i++){
         string s; cin >> s;
         mp[s] = i;
@@ -27,8 +41,8 @@ void solve(){
     for (int i = 0; i < m; i++){
         string u, v;
         cin >> u >> v;
-        adj[mp[u]].push_back(mp[v]);
-        adj[mp[v]].push_back(mp[u]);
+        adj[mp[u]].insert(mp[v]);
+        adj[mp[v]].insert(mp[u]);
     }
 
     vector<int> visited(n, 0);
@@ -38,17 +52,27 @@ void solve(){
             cycles += dfs(i, -1, visited, adj);
         }
     }
-    
+    cycles /= 2;
+    // cout << cycles << endl;
+
+    set<int> threes, ones;
     vector<int> edg(n+100, 0);
     for (int i = 0; i < n; i++){
         int sz = adj[i].size();
         edg[sz]++;
+        if (sz == 1) ones.insert(i);
     }
 
-    cycles /= 2;
-    // cout << cycles << endl;
+    if (edg[3] == 2 && edg[1] == 2){
+        for (auto u : ones){
+            threes.insert(dfs2(u, -1, adj));
+        }
+    }
     
-    if      (n >= 5 && edg[3] == 2 && edg[1] == 2 && (edg[1]+edg[2]+edg[3]) == n  && cycles == 1 && n == m){
+    
+    
+    if      (n >= 5 && edg[3] == 2 && edg[1] == 2 && (edg[1]+edg[2]+edg[3]) == n  && cycles == 1 && n == m && (int)threes.size() == 2){
+
         cout << "Alice";
     }
     else if (n >= 5 && edg[4] == 1                && edg[2]+edg[4] == n         && cycles == 2 && n == m-1){

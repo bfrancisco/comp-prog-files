@@ -33,9 +33,11 @@ void solve(){
 
     vector<int> visited(n, 0);
     int cycles = 0;
+    int regions = 0;
     for (int i = 0; i < n; i++){
         if (!visited[i]){
             cycles += dfs(i, -1, visited, adj);
+            regions++;
         }
     }
     
@@ -45,23 +47,25 @@ void solve(){
         edg[sz]++;
     }
 
-    cycles /= 2;
     // cout << cycles << endl;
+    cycles /= 2;
+    if (n < 5 && regions != 1){
+        cout << "PRANKED" << endl;
+        return;
+    }
+    if (n == m && edg[3] == 2 && edg[1] == 2 && edg[2] == n-4 && edg[1]+edg[2]+edg[3] == n && cycles == 1){
+        cout << "Alice" << endl;
+    }
+    else if (n == m-1 && edg[4] == 1 && edg[2] == n-1 && edg[4] + edg[2] == n && cycles == 2){
+        cout << "Bob" << endl;
+    }
+    else if (n == m+1 && edg[1] == 2 && edg[2] == n-2 && edg[1] + edg[2] == n && cycles == 0){
+        cout << "Cindy" << endl;
+    }
+    else{
+        cout << "PRANKED" << endl;
+    }
     
-    if      (n >= 5 && edg[3] == 2 && edg[1] == 2 && (edg[1]+edg[2]+edg[3]) == n  && cycles == 1 && n == m){
-        cout << "Alice";
-    }
-    else if (n >= 5 && edg[4] == 1                && edg[2]+edg[4] == n         && cycles == 2 && n == m-1){
-        cout << "Bob";
-    }
-    else if (n >= 5 && edg[1] == 2                && edg[1]+edg[2] == n         && cycles == 0 && n-1 == m){
-        cout << "Cindy";
-    }
-    else {
-        cout << "PRANKED";
-    }
-
-    cout << endl;
     
 }
 

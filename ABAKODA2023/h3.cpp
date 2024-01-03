@@ -19,9 +19,7 @@ struct CompressedST {
   vector<pair<ll,ll>> lr;
   map<ll, int> compress;
 
-  CompressedST() {
-    vector<ll> c(MAXN);
-    for (int i = 0; i < MAXN; i++) c[i] = i;
+  void build(vector<ll>& c){
     int sz = c.size();
     for (int i = 0; i < sz-1; i++) {
       compress[c[i]] = lr.size();
@@ -35,7 +33,7 @@ struct CompressedST {
   
     st.assign(4*n, 0);
     lazy.assign(4*n, 0);
-  } 
+  }
 
   void pull(int p) {
     st[p] = st[p<<1] + st[p<<1|1];
@@ -90,9 +88,11 @@ struct fast_median {
     ordered_set left, right, nega, posi;
     ll nsum, psum;
     CompressedST segtreeL, segtreeR;
-    fast_median(){
+    fast_median(vector<ll>& c){
         nsum = 0;
         psum = 0;
+        segtreeL.build(c);
+        segtreeR.build(c);
     }
     int get_sz() { return left.size() + right.size(); }
 
@@ -141,6 +141,7 @@ struct fast_median {
     }
 
     void remove(ll v, int i){
+        // cout << "REMOVING: " << v << " " << i << endl; 
         if (left.find(make_pair(v, i)) != left.end()){
             left.erase({v, i});
             segtreeL.update(v, v, -abs(v));
@@ -156,7 +157,7 @@ struct fast_median {
             right.erase({v, i});
             segtreeR.update(v, v, -abs(v));
             if ((int)left.size() - 2 == (int)right.size()){
-                auto [lv, li] = *left.begin();
+                auto [lv, li] = *left.rbegin();
                 right.insert({lv, li});
                 segtreeR.update(lv, lv, abs(lv));
                 left.erase({lv, li});
@@ -183,6 +184,7 @@ struct fast_median {
         // cout << "L: "; for (auto [x, i] : left) cout << x << " "; cout << endl;
         // cout << "R: "; for (auto [x, i] : right) cout << x << " "; cout << endl;
         // cout << "nega: "; for (auto [x, i] : nega) cout << x << "," << i << " "; cout << endl;
+        // cout << "posi: "; for (auto [x, i] : posi) cout << x << "," << i << " "; cout << endl;
         // cout << "total: " << ans << endl;
         // cout << "median: " << median << "  ind: " << mi << endl;
         
@@ -191,16 +193,17 @@ struct fast_median {
             ll lt_median_c = posi.order_of_key({median, -1}); // less than median count, that is +
             ll gte_median_c = ps - lt_median_c; // >= median count, that is posi
             ans -= gte_median_c * median;
-            ll rsq = segtreeL.query(0, median-1);
+            ll rsq = segtreeL.query(0, median) - segtreeL.query(median, median);
             ans -= rsq; // subtract residue
             ans += lt_median_c * median - rsq; // bring back
             ans += ns * median; // negatives
         }
         else{
-            ll lte_median_c = nega.order_of_key({median, mi})+1;
+            ll lte_median_c = nega.order_of_key({median, MAXN});
             ll gt_median_c = ns - lte_median_c;
+            // cout << lte_median_c << " " << gt_median_c << endl;
             ans -= lte_median_c * abs(median);
-            ll rsq = segtreeR.query(median+1, 0);
+            ll rsq = segtreeR.query(median, 0) - segtreeR.query(median, median);
             ans -= abs(rsq); // residue
             ans += gt_median_c * abs(median) - abs(rsq); // bring back
             ans += ps * abs(median); // positives
@@ -219,12 +222,20 @@ int main(){
     
     ll n; cin >> n;
     vector<ll> a(n), b(n), d(n);
+    set<ll> tocompresset;
+    vector<ll> tocompress;
+    tocompresset.insert(0);
     for (int i = 0; i < n; i++) cin >> a[i];
     for (int i = 0; i < n; i++) cin >> b[i];
-    for (int i = 0; i < n; i++) d[i] = b[i] - a[i];
+    for (int i = 0; i < n; i++){
+        d[i] = b[i] - a[i];
+        tocompresset.insert(d[i]);
+        // tocompresset.insert(-d[i]);
+    }
+    for (auto e : tocompresset) tocompress.push_back(e);
 
     vector<ll> tmp(MAXN, 0);
-    fast_median L, R;
+    fast_median L(tocompress), R(tocompress);
     L.add(d[0], 0);
     for (int i = 1; i < n; i++){
         R.add(d[i], i);

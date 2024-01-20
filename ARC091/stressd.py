@@ -1,7 +1,9 @@
 import random, subprocess
 
 def generate():
-    '''Insert generator here'''
+    n = random.randint(1, 6)
+    k = random.randint(0, n-1)
+    return f"{n} {k}"
 
 solution = input("Solution file: ")
 brutef = input("Bruteforce file: ")

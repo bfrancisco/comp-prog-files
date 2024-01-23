@@ -15,4 +15,5 @@ ans = 0
 for i in range(n):
     a, k = map(int, input().split())
     ans ^= grundy(a, k)
+print(ans)
 print("Takahashi" if ans else "Aoki")

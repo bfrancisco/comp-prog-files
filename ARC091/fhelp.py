@@ -1,4 +1,4 @@
-N = 201
+N = 1000
 dp = [-1 for i in range(N)]
 
 def grundy(a, k):
@@ -18,8 +18,9 @@ def grundy(a, k):
     return ret
 
 # a, k = map(int, input().split())
-k = 3
-for a in range(1, N):
-    g = grundy(a, k)
-    if a%3:
-        print(f"{a}\t:\t{g}")
+k = 200
+print(grundy(999, k))
+# for a in range(1, N):
+#     g = grundy(a, k)
+#     if g==1:
+#         print(f"{a}\t:\t{g}")

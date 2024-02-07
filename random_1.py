@@ -1,21 +1,12 @@
-# uhllhw vymyrht ht suv hg dkh ehrydyma ywdasatr l nwv m yr n uhllhw vymyrht hg l nwv m dfnd yr standat dfnw nwo hdfat uhllhw vymyrht hg l nwv m. Eht azalech
+n = 3
+for bit in range(1 << n):
+    A = (True if bit & 1 else False)
+    B = (True if bit & (1 << 1) else False)
+    C = (True if bit & (1 << 2) else False)
+    inv = (not A)
+    or1 = inv or B
+    or2 = A or C
+    or3 = inv or C
+    and1 = or3 and or2
 
-LETS = list("abcdefghijklmnopqrstuvwxyz")
-ALPHA = set(LETS)
-ss = input().lower()
-
-db = {char : char for char in LETS}
-for sh in range(26):
-    print("Shift:", sh)
-    for i in range(26):
-        db[LETS[i]] = LETS[(i + sh) % 26]
-    
-    for ch in ss:
-        if ch not in ALPHA:
-            print(ch, end='')
-        else:
-            print(db[ch], end='')
-    
-    print()
-    input()
-
+    print(bin(bit)[2:], and1)

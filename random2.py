@@ -1,15 +1,10 @@
-def rev(n):
-    ns = int(str(n)[::-1])
-    return ns
-MX = 1000000
-db = {}
-for d in range(9, MX, 9):
-    for n in range(1, MX):
-        if (rev(n) == n + d):
+from sympy import Matrix
 
-            print(n, rev(n), d)
-    print()
+A = Matrix([
+    [1,1,2,8],
+    [-1,-2,3,1],
+    [3,-7,4,10],
+])
+A = A.rref(pivots=False)
 
-# print(len(s))
-# for e in s:
-#     print(e)
+print(A)

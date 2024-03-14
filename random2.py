@@ -1,10 +1,18 @@
 from sympy import Matrix
 
 A = Matrix([
-    [1,1,2,8],
-    [-1,-2,3,1],
-    [3,-7,4,10],
+    [-5, -15, -18],
+    [26, 45, 87],
+    [40, 80, 136]
 ])
-A = A.rref(pivots=False)
+E = Matrix([
+    [-1],
+    [1],
+    [0],
+    ]
+)
+# A = A.rref(pivots=False)
 
-print(A)
+print(A*E)
+
+A = Matrix()

@@ -18,5 +18,7 @@ for p in permutations(range(1, n+1)):
             pas = 0
             break
     ans += pas
+    if (pas):
+        print(p)
 
 print(ans)

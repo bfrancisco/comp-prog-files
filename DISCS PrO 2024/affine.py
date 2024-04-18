@@ -10,8 +10,6 @@ for i in range(1, 26):
     if gcd(i, 26) == 1:
         As.append(i)
 
-# print(As)
-
 n = int(input())
 words = [i for i in input().split()]
 key = input()

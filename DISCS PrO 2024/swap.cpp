@@ -108,7 +108,6 @@ int main(){
     int q; cin >> q;
     while (q--){
         string con; cin >> con;
-        // cout << con << endl;
         if (con[0] == 'P'){
             int l, r; cin >> l >> r;
             l--; r--;

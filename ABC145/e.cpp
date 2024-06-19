@@ -2,26 +2,34 @@
 using namespace std;
 typedef long long int ll;
 
+int N, T;
+vector<pair<int, int>> A;
+vector<vector<int>> dp;
+
+int rec(int i, int t){
+    if (t <= 0 || i >= N) return 0;
+    else if (dp[i][t] != -1) return dp[i][t];
+    
+    dp[i][t] = max(rec(i+1, t), A[i].second + rec(i+1, t-A[i].first));
+    return dp[i][t];
+}
+
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
     
-    int n, t; cin >> n >> t;
-    vector<pair<int, int>> A(n);
-    for (int i = 0; i < n; i++){
+    cin >> N >> T;
+    A.resize(N);
+    for (int i = 0; i < N; i++){
         int a, b; cin >> a >> b;
         A[i] = {a, b};
     }
 
-    A.sort(A.begin(), A.end());
-    // max happiness min time
+    sort(A.begin(), A.end());
+    
+    dp.assign(N, vector<int>(T+1, -1));
 
-    vector<vector<int>> dp(n, vector<int>(t, 0));
-    for (int i = 0; i < n; i++){
-        for (int j = 0; j < t; j++){
-
-        }
-    }
+    cout << rec(0, T) << endl;
     
     return 0;
 }

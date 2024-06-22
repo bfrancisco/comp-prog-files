@@ -1,7 +1,5 @@
-3 3
-aab
-bzb
-xab
-
-abad
-bada
+4 4
+aaba
+baaa
+abaa
+aaab

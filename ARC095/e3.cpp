@@ -57,6 +57,7 @@ void undo_ops(int a, int b, vector<pair<int, int>> ops){
 }
 
 bool last_check(bool have_palin){
+
     if (have_palin){
         for (int i = 0; i < W/2; i++){
             if (grid[H/2][i] == grid[H/2][W-i-1]) continue;
@@ -110,8 +111,6 @@ bool rec(bitset<12> done, bool have_palin){
             break;
         }
     }
-
-    // for (int i = 0; i < H; i++) cout << done[i] << " "; cout << endl;
 
     done[first_not_done] = 1;
 

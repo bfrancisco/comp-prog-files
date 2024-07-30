@@ -171,7 +171,7 @@ int main(){
 
     vector<int> tmp1(n, 0), tmp2(n-k+1, 0);
     rsq segsum(tmp1);
-    rsq segmax(tmp2);
+    rmq segmax(tmp2);
     
     a.push_back({-1, -1}); // garbage
     int prev = mnval;
@@ -182,17 +182,18 @@ int main(){
             while (!q.empty()){
                 int ii = q.front();
                 q.pop();
-                ans[ii] = segmax.query(max(0, ii-k+1), min(n-k, ii+k-1));
+                ans[ii] = segmax.query(max(0, ii-k+1), min(n-k, ii));
             }
         }
         if (val == -1) break;
 
         segsum.update(i, i, 1);
-        int midi = min(i, n-k);
-        segmax.update(max(0, midi-k+1), midi+k-1, 1);
+        segmax.update(max(0, i-k+1), min(n-k, i), 1);
         q.push(i);
         prev = val;
     }
+
+    for (auto e : ans) cout << k+1-e << " "; cout << endl;
 
 
     return 0;

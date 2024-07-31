@@ -1,0 +1,20 @@
+BUY ((duck 2, carrot), 1 celery)
+? MIN duck
+? MIN carrot
+? MIN celery
+? MIN test
+SELL 10
+PACK (celery)
+UNPACK 1
+UNPACK 1
+PACK (celery)
+? COUNT celery
+? COUNT carrot
+? CONTAINS celery
+? CONTAINS carrot
+BUY ((duck 8, carrot), ((7 duck), celery))
+UNPACK 4
+UNPACK 5
+UNPACK 6
+? COUNT DUCK
+? MIN duck

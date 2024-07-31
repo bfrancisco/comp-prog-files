@@ -1,0 +1,20 @@
+OK
+2
+2
+1
+-1
+DISCARD
+DISCARD
+OK, 1 container added.
+DISCARD
+OK
+0
+0
+1
+1
+OK
+OK, 2 containers added.
+OK, No containers added.
+OK, 1 container added.
+8
+0

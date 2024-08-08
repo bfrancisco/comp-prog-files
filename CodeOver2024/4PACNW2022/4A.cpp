@@ -9,25 +9,27 @@ vector<set<char>> out;
 bool DONE = false;
 
 bool check(vector<set<char>>& dice){
+    set<char> uniq;
+    for (auto di : dice) for (auto c : di) uniq.insert(c);
+
+    if (uniq.size() != 18) return false;
+    
     for (auto word : words){
         set<int> used;
-        for (int i = 0; i < 3; i++){
-            int match = 0;
-            for (int j = 0; j < 3; j++){
-                if (dice[j].find(word[i]) != dice[j].end()){
-                    if (used.find(j) != used.end())
-                        return false;
-                    else
-                        used.insert(j);
+        for (auto ltr : word){
+            for (int d = 0; d < 3; d++){
+                
+                if (dice[d].find(ltr) != dice[d].end()){
+                    used.insert(d);
                 }
             }
         }
+        if (used.size() != 3) return false;
     }
     return true;
 }
 
 void rb(vector<set<char>>& dice){
-    
     if (!check(dice) || DONE){
         return;
     }
@@ -37,9 +39,9 @@ void rb(vector<set<char>>& dice){
             for (auto c : dice[d]){
                 out[d].insert(c);
             }
+        }
         DONE = true;
         return;
-        }
     }
     int d = 0;
     while (dice[d].size() == 6) d++;

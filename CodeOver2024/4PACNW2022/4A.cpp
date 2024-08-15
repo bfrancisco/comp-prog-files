@@ -79,6 +79,10 @@ int main(){
         for (int j = 0; j < 3; j++){
             char c = words[i][j];
             distinct.insert(c);
+            int mtch = 0;
+            for (char cc : words[i]){
+                if  
+            }
         }
     }
     

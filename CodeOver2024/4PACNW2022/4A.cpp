@@ -8,32 +8,41 @@ map<char, set<char>> impo;
 vector<set<char>> out;
 bool DONE = false;
 
-bool check(vector<set<char>>& dice){
+bool check(vector<set<char>>& dice, int curlets){
     set<char> uniq;
-    for (auto di : dice) for (auto c : di) uniq.insert(c);
-
-    if (uniq.size() != 18) return false;
+    for (auto di : dice) for (auto c : di){
+        uniq.insert(c);
+    }
+    if (uniq.size() != curlets) return false;
     
+
+    if (curlets < 18) return true;
+    for (auto di : dice){
+        for (auto c : di) cout << c;
+        cout << " ";
+    } cout << "\t";
+
     for (auto word : words){
         set<int> used;
         for (auto ltr : word){
             for (int d = 0; d < 3; d++){
-                
                 if (dice[d].find(ltr) != dice[d].end()){
                     used.insert(d);
                 }
             }
         }
         if (used.size() != 3) return false;
+
     }
     return true;
 }
 
 void rb(vector<set<char>>& dice){
-    if (!check(dice) || DONE){
+    int curlets = dice[0].size() + dice[1].size() + dice[2].size();
+    if ((!check(dice, curlets)) || DONE){
         return;
     }
-    else if (dice[0].size() + dice[1].size() + dice[2].size() == 18){
+    else if (curlets == 18){
         // good dice
         for (int d = 0; d < 3; d++){
             for (auto c : dice[d]){
@@ -43,16 +52,12 @@ void rb(vector<set<char>>& dice){
         DONE = true;
         return;
     }
-    int d = 0;
-    while (dice[d].size() == 6) d++;
-
-    assert(d < 3 && d >= 0);
-
+    
     for (int i = 0; i < 18; i++){
-        if (dice[d].find(letters[i]) != dice[d].end()) continue;
-        dice[d].insert(letters[i]);
+        if (dice[curlets%3].find(letters[i]) != dice[curlets%3].end()) continue;
+        dice[curlets%3].insert(letters[i]);
         rb(dice);
-        dice[d].erase(letters[i]);
+        dice[curlets%3].erase(letters[i]);
     }
 
 }
@@ -98,9 +103,12 @@ int main(){
     out.resize(3);
 
     vector<set<char>> dice(3);
+    for (int i = 0; i < 3; i++){
+        dice[i].insert(words[0][i]);
+    }
     rb(dice);
 
-    cout << endl << endl;
+    // cout << endl << endl;
     for (auto di : out){
         for (auto c : di) cout << c;
         cout << " ";

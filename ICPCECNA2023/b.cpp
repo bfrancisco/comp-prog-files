@@ -18,17 +18,6 @@ double f(int l, int r){
     return x2 - xb*(double)2*xi + z*xb*xb + y;
 }
 
-void opt(int pi, int k, double cur){
-    if (k == K){
-        dp[pi][k] = cur + (pi < N+M ? f(pi+1, N+M) : 0);
-        return;
-    }
-
-    for (int i = pi+1; i <= N+M; i++){
-        opt(i, k+1, f(pi+1, i));
-    }
-}
-
 int main(){
     cin >> N >> M >> K >> s;
     pnts.assign(N+M+1, 0);
@@ -48,15 +37,17 @@ int main(){
     // for (int i = 1; i <= N+M; i++) cout << cumu[i] << " "; cout << endl;
     // for (int i = 1; i <= N+M; i++) cout << squa[i] << " "; cout << endl;
 
-    // cout << setprecision(10) << f(1, 3) + f(4, 8) << endl;
-    memset(dp, 1e9, sizeof(dp));
-    opt(0, 1, 0);
-
-    double ans = 1e9;
     for (int i = 1; i <= N+M; i++){
-        ans = min(ans, dp[i][K]);
+        dp[i][1] = f(1, i);
+        for (int k = 2; k <= K; k++){
+            dp[i][k] = dp[i][1];
+            for (int j = 1; j < i; j++){
+                dp[i][k] = min(dp[i][k], dp[j][k-1] + f(j+1, i));
+            }
+        }
     }
-    cout << setprecision(10) << ans << endl;
+
+    cout << setprecision(10) << dp[N+M][K] << endl;
 
 
     return 0;

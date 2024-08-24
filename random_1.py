@@ -1,7 +1,1 @@
-db = {
-    'a' : 1,
-    'b' : 2,
-}
-print(db.keys())
-for i, j in db.items():
-    print(i, j)
+print(*reversed([input() for i in range(5)]), sep='\n') 

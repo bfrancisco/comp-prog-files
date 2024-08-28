@@ -2,7 +2,7 @@
 using namespace std;
 using ll = long long int;
 
-const int MXSIEVE = 500;
+const int MXSIEVE = 281;
 
 vector<ll> sieve(int n){
     int prime[MXSIEVE+1];
@@ -66,20 +66,56 @@ int main(){
     // for (auto &[depth, path] : db){
     //     cout << "depth: " << depth << endl;
     //     for (auto x : path) cout << x << " "; cout << endl;
-    // }
+    // }cout << endl;
+
+    vector<pair<int, vector<int>>> newdb;
+
+    for (int i = 0; i < db.size(); i++){
+        int hi = 0;
+        for (int j = 0; j < i; j++){
+            // cout << "I J " << i << " " << j << endl;
+            for (int k = 0; k < db[i].first; k++){
+                if (db[i].second[k] == db[j].second[k]){
+                    hi = max(hi, k+1);
+                }
+            }
+        }
+        
+        if (hi == 0){
+            newdb.push_back(db[i]);
+            continue;
+        }
+
+        vector<int> newpath;
+        int newdepth = db[i].first - hi;
+        for (; hi < db[i].first; hi++){
+            newpath.push_back(db[i].second[hi]);
+        }
+
+        newdb.push_back({newdepth, newpath});
+    }
+
+    sort(newdb.begin(), newdb.end(), greater<pair<int, vector<int>>>());
+    // for (auto &[depth, path] : newdb){
+    //     cout << "depth: " << depth << endl;
+    //     for (auto x : path) cout << x << " "; cout << endl;
+    // }cout << endl;
+
 
     int ip = 0;
     vector<ll> val(n+1, 1);
-    for (auto &[depth, path] : db){
+    for (auto &[depth, path] : newdb){
         for (auto u : path){
-            if (val[u] == 1 || val[u] % primes[ip] == 0){
-                val[u] = val[parent[u]] * primes[ip];
-            }
+            val[u] = val[parent[u]] * primes[ip];
         }
         ip += 1;
     }
 
-    for (int i = 1; i <= n; i++) cout << val[i] << " "; cout << endl;
+    for (int i = 1; i <= n; i++){
+        assert(val[i] <= (ll)1e18);
+        cout << val[i] << " ";
+    } 
+    cout << endl;
     
     return 0;
 }

@@ -22,38 +22,26 @@ for _ in range(int(input())):
 
     # print(sa, sb)
     i, j = 0, 0
-
-    c = []
-    sc = set()
-    while i < len(a) and j < len(b):
+    while True:
         if a[i] == 1e9 or b[j] == 1e9:
             break
         # print(a[i], b[j])
         if a[i] < b[j]:
-            if b[j] + b[j] - a[i] in sa:
-                ans += 1
             i += 1
         elif b[j] < a[i]:
-            if a[i] + a[i] - b[j] in sb:
-                ans += 1
             j += 1
         else:
             ans += (i + len(a)-1-(i+1)) + (j + len(b)-1-(j+1))
-            c.append(a[i])
-            sc.add(a[i])
-            if a[i+1] < b[j+1]:
-                i += 1
-            elif a[i+1] > b[j+1]:
-                j += 1
-            else:
-                i += 1
-                j += 1
+            i += 1
+            j += 1
         
         # print(ans)
     
-    # print(c)
-    for i in range(len(c)):
-        if (c[i]+2 in sc and c[i]+1 in sc):
-            ans += 2
+    for i in range(len(a)):
+        if a[i]+1 in sb and a[i]+2 in sa:
+            ans += 1
+    for i in range(len(b)):
+        if b[i]+1 in sa and b[i]+2 in sb:
+            ans += 1
 
     print(ans)

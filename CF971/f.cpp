@@ -60,37 +60,29 @@ void solve(){
     int n, k, q;
     cin >> n >> k >> q;
     vector<int> a(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    vector<pair<int, int>> inc(n);
-    inc[0] = {1, 0};
-    for (int i = 1; i < n; i++){
-        if (a[i-1]+1 == a[i]){
-            inc[i] = {inc[i-1].first + 1, i};
-        }
-        else{
-            inc[i] = {1, i};
-        }
+    for (int i = 0; i < n; i++){
+        cin >> a[i];
+        a[i] -= i;
     }
 
-    // for (auto x : inc) cout << x.first << " " << x.second << endl; cout << endl;
+    for (auto x : a) cout << x << " "; cout << endl;
+    map<int, int> db;
+    map<int, int> ans;
+    int mx = -1;
+    for (int i = 0; i < k; i++){
+        db[a[i]]++;
+        mx = max(mx, db[a[i]]);
+    }
 
-    segtree seg(inc);
-    while(q--){
-        int l, r; cin >> l >> r;
-        l--; r--;
-
-        // cout << seg.query(l, r).first << " " << seg.query(l, r).second << endl;
-
-        auto [mx, ind] = seg.query(l, r);
-        // cout << "mx: " << mx << endl;
-        // cout << "ind: " << ind << endl;
-
-        mx = (ind-mx+1 < l ? ind-l+1 : mx);
-        if (ind+1 < r){
-            auto [mx2, ind2] = seg.query(ind+1, r);
-            mx = max(mx, mx2);
-        }
-        cout << max(0, k - mx) << endl;
+    ans[0] = mx;
+    int l = 0, r = k-1;
+    while (r < n){
+        db[a[l]]--;
+        l++;
+        db[a[l]]++;
+    }
+    for (auto [k, v] : db){
+        cout << k << " " << v << endl;
     }
 
 }

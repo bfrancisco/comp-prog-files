@@ -5,6 +5,18 @@ typedef long long int ll;
 const int N = 9;
 vector<vector<int>> grid;
 
+// 0 0 0  0 0 0  0 0 0
+// 0 0 0  0 0 0  0 0 0
+// 0 0 0  0 0 0  0 0 0
+
+// 0 0 0  0 0 0  0 0 0
+// 0 0 0  0 0 0  0 0 0
+// 0 0 0  0 0 0  0 0 0
+
+// 0 0 0  0 0 0  0 0 0
+// 0 0 0  0 0 0  0 0 0
+// 0 0 0  0 0 0  0 0 0
+
 bool can_place(int R, int C, int x){
     int gud = 1;
     // col
@@ -18,10 +30,10 @@ bool can_place(int R, int C, int x){
     }
 
     // box
-    int sr, sc;
-    sr = R/3;
-    sc = C/3;
-    for (int r = sr; r < sr+3; r++) for (int c = sc; c < sc; c++){
+    int sr = R, sc = C;
+    while (sr%3!=0) sr--;
+    while (sc%3!=0) sc--;
+    for (int r = sr; r < sr+3; r++) for (int c = sc; c < sc+3; c++){
         if (x == grid[r][c]) {gud = 0; break;}
     }
 
@@ -136,6 +148,30 @@ bool complete(){
         if (grid[r][c] == 0) return false;
     }
 
+    for (int r = 0; r < N; r++){
+        set<int> ns = {1,2,3,4,5,6,7,8,9};
+        for (int c = 0; c < N; c++){
+            ns.erase(grid[r][c]);
+        }
+        assert(ns.empty());
+    }
+    for (int c = 0; c < N; c++){
+        set<int> ns = {1,2,3,4,5,6,7,8,9};
+        for (int r = 0; r < N; r++){
+            ns.erase(grid[r][c]);
+        }
+        assert(ns.empty());
+    }
+    for (int sr = 0; sr < N; sr+=3){
+        for (int sc = 0; sc < N; sc+=3){
+            set<int> ns = {1,2,3,4,5,6,7,8,9};
+            for (int r = sr; r < sr+3; r++) for (int c = sc; c < sc+3; c++){
+                ns.erase(grid[r][c]);
+            }
+            assert(ns.empty());
+        }
+    }
+
     return true;
 }
 
@@ -150,7 +186,6 @@ int main(){
         }
     }
     int easy = 0;
-    int trig_limit = 5;
     while (true){
         int trig = 0;
         
@@ -172,13 +207,12 @@ int main(){
         }
         
         // ulr - subgrid
-        for (int i = 0; i < N; i += 3) for (int j = 0; j < N; j+= 3){
+        for (int i = 0; i < N; i += 3) for (int j = 0; j < N; j += 3){
             trig += ulr_grid(i, j);
         }
 
         if (complete()) {easy = 1; break;}
-        if (trig == 0) { trig_limit--; }
-        if (trig_limit == 0) break;
+        if (trig == 0) { break; }
     }
 
     cout << (easy ? "Easy" : "Not easy") << endl;
@@ -193,7 +227,6 @@ int main(){
         }
         cout << endl;
     }
-    cout << endl;
     
     return 0;
 }

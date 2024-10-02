@@ -73,8 +73,15 @@ int main(){
     double fsx, fsy, fex, fey, fv;
     cin >> fsx >> fsy >> fex >> fey >> fv;
 
-    // n paths, f path, s
-    vector<vector<Point>> adj(n+3);
+    // from (fsx, fsy), check intersections from paths. Let's call all intersections from F "critical" 
+    // sort by distance, then connect adj points. last point is (fex, fey)
+    
+    // from (sx, sy), check which line is it located. connect (sx, sy) to the endpoints of first line
+    // check for intersecting lines. create node for intersecting point. connect to endpoints and repeat
+    // repeat until all paths are exhausted
+
+    // Do dijkstra from F and S, separately
+    // if F[critical_i] == F[critical_i], it is gud. output nearest
     
     return 0;
 }

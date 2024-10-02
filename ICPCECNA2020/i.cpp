@@ -1,32 +1,56 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-struct line{
+struct Point{
+    double x, y;
+
+    Point(){}
+    Point(double x, double y){
+        this->x = x;
+        this->y = y;
+    }
+
+    double get_distance(Point& other){
+        return sqrt((x-other.x)*(x-other.x) + (y-other.y)*(y-other.y));
+    }
+
+    string print(){
+        return "(" + to_string(x) + ", " + to_string(y) + ")";
+    }
+};
+
+struct Line{
     double x1, x2, y1, y2;
-    double A, B, C;
-    line(int a, int b, int c, int d){
-        x1 = a;
-        y1 = b;
-        x2 = c;
-        y2 = d;
+    Point A;
+    Point B;
 
-        A = y2 - y1;
-        B = x1 - x2;
-        C = A*(x1) + B*(y1);
+    Line(){}
+    Line(Point A, Point B){
+        this->A = A;
+        this->B = B;
     }
     
-    pair<double, double> does_intersect(line other){
-        double det = A*other.B - other.A*B;
-        if (fabs(det) <= 0.000001) return {DBL_MAX, DBL_MAX};
-        double x, y;
-        x = (other.B*C - B*other.C)/det;
-        y = (A*other.C - other.B*C)/det;
-        return {x, y};
+    Point get_intersecting_point(Line& other){
+        double a1, b1, c1, a2, b2, c2;
+        a1 = B.y - A.y;
+        b1 = A.x - B.x;
+        c1 = a1*(A.x) + b1*(A.y);
+    
+        a2 = other.B.y - other.A.y;
+        b2 = other.A.x - other.B.x;
+        c2 = a2*(other.A.x) + b2*(other.A.y);
+
+        double determinant = a1*b2 - a2*b1;
+
+        if (determinant == 0) return {DBL_MAX, DBL_MAX};
+        double cx, cy;
+        cx = (b2*c1 - b1*c2)/determinant;
+        cy = (a1*c2 - a2*c1)/determinant;
+        return Point(cx, cy);
     }
     
-
     void print(){
-        cout << "(" << x1 << ", " << y1 << ") to " << "(" << x2 << ", " << y2 << ")" << endl;
+        cout << A.print() << " to " << B.print() << endl;
     }
 };
 
@@ -34,18 +58,23 @@ int main(){
     int n;
     cin >> n;
 
-    vector<line> lines;
-    double a,b,c,d;
+    vector<Line> lines;
     for (int i = 0; i < n; i++){
+        double a,b,c,d;
         cin >> a >> b >> c >> d;
-        lines.push_back(line(a,b,c,d));
+        lines.push_back(Line(Point(a, b), Point(c, d)));
     }
 
 
-    for (auto line : lines) line.print();
+    // for (auto line : lines) line.print();
 
-    pair<double, double> z = lines[0].does_intersect(lines[1]);
-    cout << z.first << " " << z.second << endl;
+    double sx, sy, sv;
+    cin >> sx >> sy >> sv;
+    double fsx, fsy, fex, fey, fv;
+    cin >> fsx >> fsy >> fex >> fey >> fv;
+
+    // n paths, f path, s
+    vector<vector<Point>> adj(n+3);
     
     return 0;
 }

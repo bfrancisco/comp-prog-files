@@ -14,13 +14,12 @@ struct Point{
         return sqrt((x-other.x)*(x-other.x) + (y-other.y)*(y-other.y));
     }
 
-    string print(){
-        return "(" + to_string(x) + ", " + to_string(y) + ")";
+    void print(){
+        cout << "(" << x << ", " << y << ")";
     }
 };
 
 struct Line{
-    double x1, x2, y1, y2;
     Point A;
     Point B;
 
@@ -50,7 +49,7 @@ struct Line{
     }
     
     void print(){
-        cout << A.print() << " to " << B.print() << endl;
+        A.print(); cout << " to "; B.print(); cout << endl;
     }
 };
 
@@ -65,8 +64,8 @@ int main(){
         lines.push_back(Line(Point(a, b), Point(c, d)));
     }
 
-
     // for (auto line : lines) line.print();
+    // cout << lines[0].A.get_distance(lines[0].B) << endl;
 
     double sx, sy, sv;
     cin >> sx >> sy >> sv;

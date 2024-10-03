@@ -138,11 +138,16 @@ void dijkstra(Point start, map<Point, double>& time, double vel, map<Point, set<
 int main(){
     int n;
     cin >> n;
+    const double PR = 10000;
 
     vector<Line> lines;
     for (int i = 0; i < n; i++){
         double a,b,c,d;
         cin >> a >> b >> c >> d;
+        a*=PR;
+        b*=PR;
+        c*=PR;
+        d*=PR;
         lines.push_back(Line(Point(a, b), Point(c, d)));
     }
 
@@ -153,6 +158,12 @@ int main(){
     cin >> sx >> sy >> sv;
     double fsx, fsy, fex, fey, fv;
     cin >> fsx >> fsy >> fex >> fey >> fv;
+    sx *= PR;
+    sy *= PR;
+    fsx *= PR;
+    fsy *= PR;
+    fex *= PR;
+    fey *= PR;
     Point S(sx, sy), F_start(fsx, fsy), F_end(fex, fey);
     Line F(F_start, F_end);
 
@@ -213,7 +224,7 @@ int main(){
     dijkstra(S, S_time, sv, adj);
 
     // print_adj(adj);
-    cout << setprecision(10);
+    cout << setprecision(15);
     // cout << "F TIME" << endl;
     // for (auto& [pnt, t] : F_time){
     //     // if (t == DBL_MAX) continue;
@@ -234,7 +245,7 @@ int main(){
         }
     }
 
-    cout << (ans == DBL_MAX ? -1 : ans) << endl;
+    cout << (ans == DBL_MAX ? -1 : ans/PR) << endl;
     
     return 0;
 }

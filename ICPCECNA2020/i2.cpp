@@ -79,7 +79,7 @@ struct Line{
     }
 
     bool on_line(Point pnt){
-        return (fabs(A.get_distance(B) - (pnt.get_distance(A) + pnt.get_distance(B))) < 0.00001);
+        return (fabs(A.get_distance(B) - (pnt.get_distance(A) + pnt.get_distance(B))) < 0.0000001);
     }
     
     void print(){
@@ -144,10 +144,10 @@ int main(){
     for (int i = 0; i < n; i++){
         double a,b,c,d;
         cin >> a >> b >> c >> d;
-        a*=PR;
-        b*=PR;
-        c*=PR;
-        d*=PR;
+        // a*=PR;
+        // b*=PR;
+        // c*=PR;
+        // d*=PR;
         lines.push_back(Line(Point(a, b), Point(c, d)));
     }
 
@@ -158,12 +158,12 @@ int main(){
     cin >> sx >> sy >> sv;
     double fsx, fsy, fex, fey, fv;
     cin >> fsx >> fsy >> fex >> fey >> fv;
-    sx *= PR;
-    sy *= PR;
-    fsx *= PR;
-    fsy *= PR;
-    fex *= PR;
-    fey *= PR;
+    // sx *= PR;
+    // sy *= PR;
+    // fsx *= PR;
+    // fsy *= PR;
+    // fex *= PR;
+    // fey *= PR;
     Point S(sx, sy), F_start(fsx, fsy), F_end(fex, fey);
     Line F(F_start, F_end);
 
@@ -176,13 +176,19 @@ int main(){
     }
  
     sort(f_path.begin(), f_path.end());
+    if (f_path[0] == f_path[1]) f_path.erase(f_path.begin());
+    if (f_path[f_path.size()-1] == f_path[f_path.size()-2]) f_path.erase(--f_path.end());
 
-    // for (auto pnt : f_path) {pnt.print(); cout << endl;}
+    // for (auto fp : f_path){
+    //     fp.print(); cout << endl;
+    // }cout << endl;
 
     map<Point, set<Point>> adj;
     for (int i = 0; i < f_path.size()-1; i++){
-        adj[f_path[i]].insert(f_path[i+1]);
-        adj[f_path[i+1]].insert(f_path[i]);
+        if (!(f_path[i] == f_path[i+1])){
+            adj[f_path[i]].insert(f_path[i+1]);
+            adj[f_path[i+1]].insert(f_path[i]);
+        }
     }
 
     // build graph for S
@@ -235,17 +241,24 @@ int main(){
     //     // if (t == DBL_MAX) continue;
     //     cout << "(" << pnt.x << ", " << pnt.y << ") : " << t << endl;
     // } cout << endl;
+    // cout << "FPATH" << endl;
+    // for (auto fp : f_path){
+    //     fp.print(); cout << endl;
+    // }cout << endl;
+
 
     double ans = DBL_MAX;
     for (int i = 0; i < f_path.size(); i++){
         if (S_time.find(f_path[i]) != S_time.end()){
-            if (S_time[f_path[i]] <= F_time[f_path[i]]){
+            if (F_time[f_path[i]] - S_time[f_path[i]] >= 0.0000001){
                 ans = min(ans, F_time[f_path[i]]);
+                
             }
         }
+        // f_path[i].print(); cout << " " << ans << endl;
     }
 
-    cout << (ans == DBL_MAX ? -1 : ans/PR) << endl;
+    cout << (ans == DBL_MAX ? -1 : ans) << endl;
     
     return 0;
 }

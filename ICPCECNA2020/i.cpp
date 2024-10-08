@@ -118,7 +118,8 @@ void update_adj(Point pnt, Line line, map<Point, set<Point>>& adj){
 }
 
 void dijkstra(Point start, map<Point, double>& time, double vel, map<Point, set<Point>>& adj){
-    priority_queue<pair<double, Point>, vector<pair<double, Point>>, greater<pair<double, Point>>> q;
+    // priority_queue<pair<double, Point>, vector<pair<double, Point>>, greater<pair<double, Point>>> q;
+    priority_queue<pair<double, Point>>> q;
     q.push(make_pair(0, start));
     time[start] = 0;
     while (!q.empty()){

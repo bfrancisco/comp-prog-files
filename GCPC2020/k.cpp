@@ -33,7 +33,7 @@ int main(){
         if (!is_mighty){
             church.push_back({x, y});
         }
-    }    
+    }
 
 
 

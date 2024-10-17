@@ -32,13 +32,13 @@ int main(){
         }
 
         sort(bot.begin(), bot.end(), greater<int>());
-
-        for (i = 0; i < bot.size(); i++){
-            if (botsm + bot[i] <= X) botsm += bot[i];
+        
+        for (int i = 0; i < bot.size(); i++){
+            if (botsm <= topsm) botsm += bot[i];
             else topsm += bot[i];
         }
 
-        if (topsm <= X){
+        if (topsm <= X && botsm <= X){
             ans = h;
             break;
         }
@@ -69,7 +69,12 @@ int main(){
             else botsm += top[i];
         }
 
-        if (botsm <= X){
+        for (int i = 0; i < top.size(); i++){
+            if (botsm <= topsm) botsm += top[i];
+            else topsm += top[i];
+        }
+
+        if (botsm <= X && topsm <= X){
             ans = h;
             break;
         }

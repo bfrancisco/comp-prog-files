@@ -8,7 +8,7 @@ struct DisjointSet{
     unordered_map<int, int> parent;
     unordered_map<int, int> rank;
     unordered_map<int, int> members;
-
+    
     void makeSet(vector<int> const &universe){
         for (int i: universe){
             parent[i] = i;

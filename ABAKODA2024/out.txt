@@ -1,0 +1,51 @@
+[[3, 0], [2, 1], [1, 2]]
+s : 3
+q : 4
+u : 4
+a : 4
+w : 3
+k : 4
+c : 4
+h : 3
+i : 3
+r : 3
+p : 3
+
+s : 0
+q : 1
+u : 1
+a : 1
+w : 0
+k : 1
+c : 4
+h : 3
+i : 3
+r : 3
+p : 3
+
+s : 0
+q : 1
+u : 1
+a : 1
+w : 0
+k : 1
+c : 1
+h : 0
+i : 0
+r : 0
+p : 0
+
+s : 0
+q : 0
+u : 0
+a : 0
+w : 0
+k : 0
+c : 0
+h : 0
+i : 0
+r : 0
+p : 0
+
+{'squawk': 3, 'chirp': 3, 'quack': 1}
+squawk squawk squawk chirp chirp chirp quack 

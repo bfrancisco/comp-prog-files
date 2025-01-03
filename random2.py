@@ -1,11 +1,15 @@
-s = input()
-n = len(s)
+from math import ceil
+for _ in range(int(input())):
+    n,b,c = map(int, input().split())
+    if b == 0:
+        if c >= n:
+            print(n)
+        elif c >= n-2:
+            print(n-1)
+        else:
+            print(-1)
+    elif c >= n:
+        print(n)
+    else:
+        print(n - ceil((n-c)/b))
 
-for rpad in range(n):
-    pattern = s[:rpad]
-    for lrep in range(1, min(rpad, n-len(pattern)+1)):
-        if pattern == s[lrep:lrep+len(pattern)] and lrep+len(pattern) == n:
-            print("YES")
-            print(pattern)
-            exit()
-print("NO")

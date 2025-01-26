@@ -34,8 +34,10 @@ void solve(){
         for (int j = 0; j < n; j++) cin >> order[j];
 
         for (int j = 1; j < n-1; j++){
-            adj[order[j]].insert(order[j+1]);
-            indeg[order[j+1]]++;
+            if (adj[order[j]].find(order[j+1]) == adj[order[j]].end()){
+                adj[order[j]].insert(order[j+1]);
+                indeg[order[j+1]]++;
+            }
         }
     }
 

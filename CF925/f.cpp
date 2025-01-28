@@ -2,25 +2,19 @@
 using namespace std;
 typedef long long int ll;
 
-bool dfs(int u, vector<set<int>>& adj, vector<int>& vis){
-    bool ret = true;
+bool dfs(int u, vector<set<int>>& adj, vector<int>& vis, vector<int>& rec){
     // cout << u << endl;
-    for (auto v : adj[u]){
-        if (vis[v]){
-            ret = false;
-            // cout << "FALSE: " << v << endl;            
-            break;
+    if (!vis[u]){
+        vis[u] = rec[u] = 1;
+
+        for (auto v : adj[u]){
+            // cout << "adj: " << v << endl;
+            if (!vis[v] && dfs(v, adj, vis, rec)) return true;
+            else if (rec[v]) return true;
         }
-        
-        vis[v] = 1;
-        ret = ret && dfs(v, adj, vis);
-        vis[v] = 0;
-
-        if (!ret) break;
     }
-
-    return ret;
-
+    rec[u] = 0;
+    return false;
 }
 
 void solve(){
@@ -43,28 +37,18 @@ void solve(){
 
     if (n <= 2) {cout << "YES\n"; return;}
 
-    int root = -1;
-    for (int i = 1; i <= n; i++){
-        if (indeg[i] == 0) {root = i; break;}
-    }
-    if (root == -1) {cout << "NO\n"; return;}
 
     vector<int> vis(n+1, 0);
-    vis[root] = 1;
+    vector<int> rec(n+1, 0);
 
-    // cout << "root: " << root << endl;
-    // for (int i = 1; i <= n; i++){
-    //     cout << i << " : ";
-    //     for (auto j : adj[i]) cout << j << " ";
-    //     cout << endl; 
-    // }cout << endl;
+    bool cycle = false;
+    for (int i = 1; i <= n; i++){
+        if (vis[i]) continue;
+        cycle = cycle || dfs(i, adj, vis, rec);
+    }
 
-    if (dfs(root, adj, vis)){
-        cout << "YES\n";
-    }
-    else{
-        cout << "NO\n";
-    }
+
+    cout << (cycle ? "NO" : "YES") << endl; 
 
 }
 

@@ -1,6 +1,3 @@
-a = [input() for i in range(256)]
-b = [input() for i in range(256)]
-
-for i in range(1, 257):
-    if (a[i-1] != b[i-1]):
-        print(i)
+for _ in range(int(input())):
+    s = input()
+    print(s[0] + str(len(s)-2) + s[-1] if len(s) > 10 else s)

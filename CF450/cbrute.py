@@ -5,16 +5,18 @@ if (n==1):
     exit()
 mp = [-1 for i in range(n+1)]
 for i in range(n):
-    b = [a[j] for j in range(n) if j != i]
-    rec = 1
-    high = b[0]
-    for j in range(1, n-1):
+    b = a[:i] + a[i+1:]
+    # print(b)
+    rec = 0
+    high = 0
+    # print(f'high: {high}')
+    for j in range(n-1):
         if b[j] > high:
             high = b[j]
             rec += 1
-        else:
-            break
-    
+    # print(f'high: {high}')
+    # print(f"rem: {a[i]}, record: {rec}")
     mp[a[i]] = rec
 
+# print(mp)
 print(mp.index(max(mp)))
